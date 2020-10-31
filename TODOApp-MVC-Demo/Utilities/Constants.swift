@@ -20,18 +20,25 @@ struct ViewControllers {
     static let signUpVC = "SignUpVC"
     static let signInVC = "SignInVC"
     static let todoListVC = "TodoListVC"
+    static let newTaskVC = "NewTaskVC"
 }
 
 // Urls
 struct URLs {
-    static let base     = "https://api-nodejs-todolist.herokuapp.com/user"
-    static let login    = base + "/login"
-    static let signup   = base + "/register"
+    static let base     = "https://api-nodejs-todolist.herokuapp.com"
+    static let login    = base + "/user/login"
+    static let signup   = base + "/user/register"
+    static let newTask  = base + "/task"
 }
 
 // Header Keys
 struct HeaderKeys {
-    static let contentType = "Content-Type"
+    static let contentType      = "Content-Type"
+    static let authorization    = "Authorization"
+}
+// Authorization Key
+struct Authorization {
+    static let key = "Bearer " + (UserDefaultsManager.shared().token ?? "")
 }
 
 // Parameters Keys
@@ -40,6 +47,7 @@ struct ParameterKeys {
     static let email    = "email"
     static let password = "password"
     static let age      = "age"
+    static let body     = "description"
 }
 
 // UserDefaultsKeys

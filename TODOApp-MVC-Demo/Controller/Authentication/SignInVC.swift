@@ -24,37 +24,50 @@ class SignInVC: UIViewController {
         super.viewDidLoad()
         configurTextFields()
         configureButtons()
-        
-
-//        APIManager.login(with: "ahmed.ezzat@gmail.com", password: "12345678") { (error, loginData) in
-//            if let error = error {
-//                print(error.localizedDescription)
-//            } else if let loginData = loginData {
-//                print(loginData.token)
-//                UserDefaultsManager.shared().token = loginData.token
-//            }
-//        }
+        navigationController?.navigationBar.isHidden = true
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     fileprivate func configurTextFields(){
         emailTextField.delegate     = self
         passwordTextField.delegate  = self
     }
+    
     fileprivate func configureButtons(){
         signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
     }
     
     @objc fileprivate func signInPressed(){
-        
+        if let text = emailTextField.text {
+            email = text
+        }
+        if let text = passwordTextField.text {
+            password = text
+        }
+        //"youseftest@gmail.com" "12345678"
+        APIManager.login(with: email, password: password) { (error, loginData) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let loginData = loginData {
+                print(loginData.token)
+                UserDefaultsManager.shared().token = loginData.token
+            }
+        }
     }
+    
     @objc fileprivate func signUpPressed(){
         let signUpVC = SignUpVC.create()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
 
-    
-    
-    
 
     // MARK:- Public Methods
     class func create() -> SignInVC {

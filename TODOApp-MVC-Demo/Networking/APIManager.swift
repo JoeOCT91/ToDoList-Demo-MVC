@@ -66,8 +66,96 @@ class APIManager {
                 completion(nil, loginData)
             } catch let error {
                 print(error)
-                print(203)
+            }
+        }
+    }
+    class func getTasks(completion: @escaping (_ error: Error?, _ loginData: TasksResponse?) -> Void) {
+        
+        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
+                                    HeaderKeys.authorization: Authorization.key]
+        
+        AF.request(URLs.newTask, method: HTTPMethod.get, encoding: JSONEncoding.default, headers: headers).response {
+            response in
+            guard response.error == nil else {
+                print(response.error!)
+                completion(response.error, nil)
+                return
+            }
+            
+            guard let data = response.data else {
+                print("didn't get any data from API")
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let tasks = try decoder.decode(TasksResponse.self, from: data)
+                completion(nil, tasks)
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    class func SaveTask(with body: String,
+                        completion: @escaping (_ error: Error?, _ loginData: NewTaskResponse?) -> Void) {
+        
+        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
+                                    HeaderKeys.authorization: Authorization.key]
+        let params: [String: String] = [ParameterKeys.body: body]
+        
+        AF.request(URLs.newTask, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
+            response in
+            guard response.error == nil else {
+                print(response.error!)
+                completion(response.error, nil)
+                return
+            }
+            
+            guard let data = response.data else {
+                print("didn't get any data from API")
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let newTask = try decoder.decode(NewTaskResponse.self, from: data)
+                completion(nil, newTask)
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    class func editTask(with task: TaskData, completion: @escaping (_ error: Error?, _ loginData: NewTaskResponse?) -> Void) {
+        let taskEndPoint = URLs.newTask + "/\(task.id)"
+        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
+                                    HeaderKeys.authorization: Authorization.key]
+        print(task.status)
+        let parameters: [String : Any] = ["completed"   : task.status,
+                                          "description" : task.body]
+        
+        AF.request(taskEndPoint, method: HTTPMethod.put, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response {
+            response in
+            guard response.error == nil else {
+                print(response.error!)
+                completion(response.error, nil)
+                return
+            }
+            
+            guard let data = response.data else {
+                print("didn't get any data from API")
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let tasks = try decoder.decode(NewTaskResponse.self, from: data)
+                completion(nil, tasks)
+            } catch let error {
+                print(error)
             }
         }
     }
 }
+
+

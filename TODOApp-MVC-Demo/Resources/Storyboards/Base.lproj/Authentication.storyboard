@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EIn-el-xAk">
-                                <rect key="frame" x="25" y="244" width="364" height="45"/>
+                                <rect key="frame" x="25" y="294" width="364" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="xT9-pX-k5S"/>
                                 </constraints>
@@ -24,7 +24,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fip-D0-Q2U">
-                                <rect key="frame" x="132" y="379" width="150" height="45"/>
+                                <rect key="frame" x="132" y="434" width="150" height="45"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="qdA-Cl-VOQ"/>
@@ -36,33 +36,33 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbX-tl-wOe">
-                                <rect key="frame" x="25" y="732" width="52" height="30"/>
+                                <rect key="frame" x="25" y="632" width="52" height="30"/>
                                 <state key="normal" title="Sign up"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkf-xI-QTU">
-                                <rect key="frame" x="274" y="732" width="115" height="30"/>
+                                <rect key="frame" x="274" y="632" width="115" height="30"/>
                                 <state key="normal" title="Forget password"/>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3DH-Z0-Hd6">
-                                <rect key="frame" x="25" y="309" width="364" height="45"/>
+                                <rect key="frame" x="25" y="364" width="364" height="45"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="3DH-Z0-Hd6" firstAttribute="top" secondItem="EIn-el-xAk" secondAttribute="bottom" constant="20" id="8b0-oG-loc"/>
+                            <constraint firstItem="3DH-Z0-Hd6" firstAttribute="top" secondItem="EIn-el-xAk" secondAttribute="bottom" constant="25" id="8b0-oG-loc"/>
                             <constraint firstItem="3DH-Z0-Hd6" firstAttribute="trailing" secondItem="EIn-el-xAk" secondAttribute="trailing" id="ACw-kf-nag"/>
                             <constraint firstItem="DbX-tl-wOe" firstAttribute="leading" secondItem="EIn-el-xAk" secondAttribute="leading" id="Blt-j1-xi8"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kkf-xI-QTU" secondAttribute="bottom" constant="100" id="DHr-oL-n8b"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DbX-tl-wOe" secondAttribute="bottom" constant="100" id="Ktp-Co-9NS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DbX-tl-wOe" secondAttribute="bottom" constant="200" id="Ktp-Co-9NS"/>
                             <constraint firstItem="3DH-Z0-Hd6" firstAttribute="leading" secondItem="EIn-el-xAk" secondAttribute="leading" id="PXv-Ej-v3c"/>
                             <constraint firstItem="Fip-D0-Q2U" firstAttribute="top" secondItem="3DH-Z0-Hd6" secondAttribute="bottom" constant="25" id="TN7-VU-9SA"/>
                             <constraint firstItem="3DH-Z0-Hd6" firstAttribute="height" secondItem="EIn-el-xAk" secondAttribute="height" id="USH-z7-BCY"/>
                             <constraint firstItem="kkf-xI-QTU" firstAttribute="trailing" secondItem="EIn-el-xAk" secondAttribute="trailing" id="aUo-mm-xNl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="EIn-el-xAk" secondAttribute="trailing" constant="25" id="fqx-4q-MYw"/>
                             <constraint firstItem="Fip-D0-Q2U" firstAttribute="centerX" secondItem="EIn-el-xAk" secondAttribute="centerX" id="gzm-hm-0QO"/>
-                            <constraint firstItem="EIn-el-xAk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="200" id="ppM-7H-1pj"/>
+                            <constraint firstItem="kkf-xI-QTU" firstAttribute="centerY" secondItem="DbX-tl-wOe" secondAttribute="centerY" id="iL5-Ts-Eac"/>
+                            <constraint firstItem="EIn-el-xAk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="250" id="ppM-7H-1pj"/>
                             <constraint firstItem="EIn-el-xAk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="25" id="uKL-Qr-7di"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

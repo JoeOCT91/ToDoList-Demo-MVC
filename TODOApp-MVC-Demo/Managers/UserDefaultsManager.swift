@@ -18,6 +18,7 @@ class UserDefaultsManager {
         return UserDefaultsManager.sharedInstance
     }
     
+    
     // MARK:- Properties
     var token: String? {
         set {
