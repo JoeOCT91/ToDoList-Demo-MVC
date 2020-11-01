@@ -13,7 +13,6 @@ struct LoginResponse: Codable {
     let user: UserData
     let token: String
 
-
     enum CodingKeys: String, CodingKey {
         case user, token
     }

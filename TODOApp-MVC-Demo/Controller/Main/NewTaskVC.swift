@@ -16,19 +16,22 @@ class NewTaskVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSaveTaskButton()
-
-        
     }
     fileprivate func configureSaveTaskButton() {
         saveTaskButton.addTarget(self, action: #selector(saveTaskPressed), for: .touchUpInside)
+        saveTaskButton.clipsToBounds = true
+        saveTaskButton.layer.cornerRadius = 8
     }
     @objc fileprivate func saveTaskPressed(){
         let body = (taskBodyTextView.text ?? "")
-        APIManager.SaveTask(with: body) { (error , newTaskResponse) in
+        APIManager.SaveTask(with: body) { [weak self] (error , newTaskResponse) in
+            guard let self = self else { return }
             if let error = error {
                 print(error.localizedDescription)
             } else if let newTaskResponse = newTaskResponse {
-                print(newTaskResponse)
+                let newtask: [String : TaskData] = ["newTask" : newTaskResponse.task]
+                NotificationCenter.default.post(name: .didRecivedNewTask, object: nil, userInfo: newtask)
+                self.navigationController?.popViewController(animated: true)
             }
         }  
     }

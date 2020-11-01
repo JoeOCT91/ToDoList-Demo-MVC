@@ -15,7 +15,8 @@ class SignInVC: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var forgetPasswordButton: UIButton!
-   
+    @IBOutlet weak var passwordLabel: UILabel!
+    
     fileprivate var email    = ""
     fileprivate var password = ""
     
@@ -25,6 +26,11 @@ class SignInVC: UIViewController {
         configurTextFields()
         configureButtons()
         navigationController?.navigationBar.isHidden = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_: )))
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,13 +42,50 @@ class SignInVC: UIViewController {
     }
     
     fileprivate func configurTextFields(){
-        emailTextField.delegate     = self
-        passwordTextField.delegate  = self
+        emailTextField.delegate                 = self
+        passwordTextField.delegate              = self
+        emailTextField.layer.borderWidth        = 1
+        passwordTextField.layer.borderWidth     = 1
+        emailTextField.layer.borderColor        = UIColor.systemGray3.cgColor
+        passwordTextField.layer.borderColor     = UIColor.systemGray3.cgColor
+        passwordTextField.clipsToBounds         = true
+        emailTextField.layer.cornerRadius       = 8
+        emailTextField.clipsToBounds            = true
+        passwordTextField.layer.cornerRadius    = 8
+        passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+
     }
-    
+    @objc fileprivate func textFieldDidChange(_ textField: UITextField) {
+        passwordLabel.text = ""
+        if let text = textField.text, !text.isEmpty{
+            if textField == passwordTextField {
+                password = text
+                passwordLabel.text = Validation.isPasswordValid(password) ?  "" : "Password is not valid"
+                print("password is \(password)")
+            }
+            if textField == emailTextField {
+                email = text
+                print("email is \(email)")
+            }
+        }
+        if Validation.isValidEmail(email) && Validation.isPasswordValid(password) {
+            //can add some animation
+            signInButton.isEnabled          = true
+            signInButton.backgroundColor    = UIColor.systemBlue
+        } else {
+            signInButton.isEnabled          = false
+            signInButton.backgroundColor    = UIColor.systemGray2
+        }
+    }
+        
     fileprivate func configureButtons(){
         signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
+        signInButton.clipsToBounds      = true
+        signInButton.layer.cornerRadius = 8
+        signInButton.isEnabled          = false
+        signInButton.backgroundColor    = UIColor.systemGray2
     }
     
     @objc fileprivate func signInPressed(){
@@ -52,13 +95,14 @@ class SignInVC: UIViewController {
         if let text = passwordTextField.text {
             password = text
         }
-        //"youseftest@gmail.com" "12345678"
-        APIManager.login(with: email, password: password) { (error, loginData) in
+        APIManager.login(with: email, password: password) { [weak self] (error, loginData) in
+            guard let self = self else { return }
             if let error = error {
                 print(error.localizedDescription)
             } else if let loginData = loginData {
-                print(loginData.token)
                 UserDefaultsManager.shared().token = loginData.token
+                let toDoVC = TodoListVC.create()
+                self.navigationController?.pushViewController(toDoVC, animated: true)
             }
         }
     }
@@ -68,7 +112,6 @@ class SignInVC: UIViewController {
         navigationController?.pushViewController(signUpVC, animated: true)
     }
 
-
     // MARK:- Public Methods
     class func create() -> SignInVC {
         let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
@@ -77,5 +120,20 @@ class SignInVC: UIViewController {
 
 }
 extension SignInVC: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.becomeFirstResponder() 
+        passwordLabel.text = ""
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+
+    }
+   
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
 }

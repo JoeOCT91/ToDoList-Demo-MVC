@@ -17,15 +17,17 @@ struct Storyboards {
 
 // View Controllers
 struct ViewControllers {
-    static let signUpVC = "SignUpVC"
-    static let signInVC = "SignInVC"
-    static let todoListVC = "TodoListVC"
-    static let newTaskVC = "NewTaskVC"
+    static let signUpVC     = "SignUpVC"
+    static let signInVC     = "SignInVC"
+    static let todoListVC   = "TodoListVC"
+    static let newTaskVC    = "NewTaskVC"
+    static let profileVC    = "ProfileVC"
 }
 
 // Urls
 struct URLs {
     static let base     = "https://api-nodejs-todolist.herokuapp.com"
+    static let user     = base + "/user"
     static let login    = base + "/user/login"
     static let signup   = base + "/user/register"
     static let newTask  = base + "/task"

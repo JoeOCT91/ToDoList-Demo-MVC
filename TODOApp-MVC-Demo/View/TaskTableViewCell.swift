@@ -7,16 +7,17 @@
 //
 
 import UIKit
-protocol TaskCellDelegte {
-    func statusButtonPressed(_ task: TaskData, _ indexPath: IndexPath)
+protocol TaskCellDelegte: class {
+    func statusButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell)
+    func deleteButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell)
 }
 
 class TaskTableViewCell: UITableViewCell {
     
     static let identifier                   = "taskTableViewCell"
-    var delegte: TaskCellDelegte?
+    weak var delegte: TaskCellDelegte?
     
-    fileprivate var indexPath               = IndexPath()
+    //MARK:- Private Proprties
     fileprivate var cellTask: TaskData!
     fileprivate var statusColor             = UIView()
     fileprivate var taskBodyLabel                       = UILabel()
@@ -50,17 +51,24 @@ class TaskTableViewCell: UITableViewCell {
         self.selectedBackgroundView?.frame = insetContentViewFrame
     }
     @objc func statusButtonPressed(){
-        delegte?.statusButtonPressed(cellTask, indexPath)
+        delegte?.statusButtonPressed(cellTask, self)
     }
-    func setCell(task: TaskData, indexPath: IndexPath){
+    @objc func deleteButtonPressed(){
+        delegte?.deleteButtonPressed(cellTask, self)
+    }
+    
+    func setCell(task: TaskData){
         cellTask = task
-        self.indexPath = indexPath
+        setTaskStatus(isDone: cellTask.status)
         taskBodyLabel.text = task.body
-        statusColor.backgroundColor = task.status ? .systemGreen : .systemRed
-        statusSF = task.status ? "checkmark.square.fill" : "square"
-        let largeBoldDoc = UIImage(systemName: statusSF, withConfiguration: largeSF)
-        taskStatusButton.setImage(largeBoldDoc, for: .normal)
-        taskStatusButton.tintColor = task.status ? .systemGreen : .systemRed
+    }
+    func setTaskStatus(isDone: Bool){
+        cellTask.status             = isDone
+        statusSF                    = isDone ? "checkmark.square.fill" : "square"
+        statusColor.backgroundColor = isDone ? .systemGreen : .systemRed
+        taskStatusButton.tintColor  = isDone ? .systemGreen : .systemRed
+        let statusIcongConfig       = UIImage(systemName: statusSF, withConfiguration: largeSF)
+        taskStatusButton.setImage(statusIcongConfig, for: .normal)
     }
     
     fileprivate func configureContentView(){
@@ -79,8 +87,6 @@ class TaskTableViewCell: UITableViewCell {
     }
     
     fileprivate func configure(){
-        statusColor.backgroundColor = .systemRed
-        
         taskBodyLabel.translatesAutoresizingMaskIntoConstraints     = false
         statusColor.translatesAutoresizingMaskIntoConstraints       = false
         
@@ -92,13 +98,13 @@ class TaskTableViewCell: UITableViewCell {
             statusColor.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             statusColor.widthAnchor.constraint(equalToConstant: 12),
             
-            taskBodyLabel.leadingAnchor.constraint(equalTo: statusColor.trailingAnchor, constant: 8),
-            taskBodyLabel.trailingAnchor.constraint(equalTo: taskStatusButton.leadingAnchor, constant: -8),
+            taskBodyLabel.leadingAnchor.constraint(equalTo: statusColor.trailingAnchor, constant: padding),
+            taskBodyLabel.trailingAnchor.constraint(equalTo: taskStatusButton.leadingAnchor, constant: -padding),
             taskBodyLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             taskBodyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
         ])
     }
+    
     fileprivate func configureTaskStatusButton() {
         taskStatusButton.translatesAutoresizingMaskIntoConstraints  = false
         let largeBoldDoc = UIImage(systemName: statusSF, withConfiguration: largeSF)
@@ -114,18 +120,20 @@ class TaskTableViewCell: UITableViewCell {
     fileprivate func configureEditTaskButton(){
         let largeBoldDoc = UIImage(systemName: "square.and.pencil", withConfiguration: largeSF)
         editTaskButton.setImage(largeBoldDoc, for: .normal)
-        editTaskButton.translatesAutoresizingMaskIntoConstraints = false
         
+        editTaskButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             editTaskButton.centerXAnchor.constraint(equalTo: taskStatusButton.centerXAnchor),
             editTaskButton.heightAnchor.constraint(equalTo: taskStatusButton.heightAnchor),
         ])
     }
+    
     fileprivate func configureDeleteButton() {
         let largeBoldDoc = UIImage(systemName: "trash", withConfiguration: largeSF)
         deleteTaskButton.setImage(largeBoldDoc, for: .normal)
+        
         deleteTaskButton.translatesAutoresizingMaskIntoConstraints  = false
-
+        deleteTaskButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
         NSLayoutConstraint.activate([
             deleteTaskButton.heightAnchor.constraint(equalTo: taskStatusButton.heightAnchor),
             deleteTaskButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
@@ -134,5 +142,4 @@ class TaskTableViewCell: UITableViewCell {
         ])
     }
 
-    
 }

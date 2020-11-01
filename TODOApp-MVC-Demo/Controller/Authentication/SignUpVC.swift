@@ -28,6 +28,9 @@ class SignUpVC: UIViewController {
         configureSignupButton()
 
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
     fileprivate func configureTextFields(){
         nameTextField.delegate      = self
         emailTextField.delegate     = self
