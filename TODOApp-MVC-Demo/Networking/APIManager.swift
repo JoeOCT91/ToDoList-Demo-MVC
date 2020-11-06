@@ -35,18 +35,24 @@ class APIManager {
                 let loginData = try decoder.decode(LoginResponse.self, from: data)
                 completion(nil, loginData)
             } catch let error {
-                print(error)
+                if let stringRes = String(data: data, encoding: .utf8) {
+
+                    
+                } else {
+                    print(error)
+                }
             }
         }
     }
+    
     class func signup(with name: String, email: String, password: String, age: String,
                       completion: @escaping (_ error: Error?, _ loginData: LoginResponse?) -> Void) {
         print(name + email + password + age)
         let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json"]
         let params: [String: String] = [ParameterKeys.name: name,
-                                     ParameterKeys.email: email,
-                                     ParameterKeys.password: password,
-                                     ParameterKeys.age: age]
+                                        ParameterKeys.email: email,
+                                        ParameterKeys.password: password,
+                                        ParameterKeys.age: age]
         
         AF.request(URLs.signup, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
             response in
@@ -130,7 +136,7 @@ class APIManager {
         let taskEndPoint = URLs.newTask + "/\(task.id)"
         let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
                                     HeaderKeys.authorization: Authorization.key]
-
+        
         AF.request(taskEndPoint, method: HTTPMethod.delete, headers: headers).response { response in
             guard response.error == nil else {
                 print(response.error!)
@@ -181,7 +187,35 @@ class APIManager {
             }
         }
     }
-    
+    class func updateUserProfile(with user: UserData, completion: @escaping (Result<UserData,Error>) -> Void) {
+        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
+                                    HeaderKeys.authorization: Authorization.key]
+        let parameters: [String : Any] = ["age" : user.age,
+                                          "name" : user.name,
+                                          "email" : user.email]
+        
+        AF.request(URLs.editUser, method: HTTPMethod.put, parameters: parameters,
+                   encoding: JSONEncoding.default, headers: headers).response { response in
+            
+            guard response.error == nil else {
+                print(response.error!)
+                return
+            }
+            
+            guard let data = response.data else {
+                print("didn't get any data from API")
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let updateResponse = try decoder.decode(UpdateProfileResponse.self, from: data)
+                completion(.success(updateResponse.data))
+            } catch let error {
+                print(error)
+            }
+        }
+    }
     class func getUserInfo( completion: @escaping (_ error: Error?, _ userData: UserData?) -> Void) {
         let taskEndPoint = URLs.user + "/me"
         let headers: HTTPHeaders = [HeaderKeys.authorization: Authorization.key]
@@ -208,10 +242,9 @@ class APIManager {
             }
         }
     }
-    
+
     class func downloadAvtarImage(with userID: String, completion: @escaping (_ error: Error?, _ data: Data?) -> Void) {
         let avtarEndPoint = URLs.user + "/\(userID)/avatar"
-        print(avtarEndPoint)
         AF.request(avtarEndPoint, method: HTTPMethod.get, encoding: JSONEncoding.default).response {
             response in
             guard response.error == nil else {
@@ -226,6 +259,21 @@ class APIManager {
             completion(nil, data)
         }
     }
+    class func uploadProfileImage(with image: UIImage, completion: @escaping (Result<Bool,Error>) -> Void) {
+        let headers: HTTPHeaders = [HeaderKeys.authorization: Authorization.key]
+        let imgData = image.jpegData(compressionQuality: 0.5)!
+        let multipartFormData = MultipartFormData()
+        multipartFormData.append(imgData, withName: "avatar", fileName: "/ProfileImage.jpg", mimeType: "image/jpg")
+        AF.upload(multipartFormData: multipartFormData, to:URLs.upload, method: .post, headers: headers).response {
+            response in
+            guard response.error == nil else {
+                completion(.failure(response.error!))
+                return
+            }
+            completion(.success(true))
+        }
+    }
 }
+
 
 

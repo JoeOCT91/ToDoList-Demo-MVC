@@ -10,12 +10,17 @@ import UIKit
 
 class SignInVC: UIViewController {
     
+    //MARK:- Outlets
+    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var forgetPasswordButton: UIButton!
     @IBOutlet weak var passwordLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    
+   //MARK:- Proprities
     
     fileprivate var email    = ""
     fileprivate var password = ""
@@ -56,8 +61,11 @@ class SignInVC: UIViewController {
         emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
     }
+    
     @objc fileprivate func textFieldDidChange(_ textField: UITextField) {
-        passwordLabel.text = ""
+        passwordLabel.text  = ""
+        emailLabel.text     = ""
+        
         if let text = textField.text, !text.isEmpty{
             if textField == passwordTextField {
                 password = text
@@ -66,6 +74,7 @@ class SignInVC: UIViewController {
             }
             if textField == emailTextField {
                 email = text
+                emailLabel.text = Validation.isValidEmail(email) ? "" : "Email is not valid"
                 print("email is \(email)")
             }
         }
@@ -95,16 +104,25 @@ class SignInVC: UIViewController {
         if let text = passwordTextField.text {
             password = text
         }
+        view.showLoader()
         APIManager.login(with: email, password: password) { [weak self] (error, loginData) in
             guard let self = self else { return }
             if let error = error {
-                print(error.localizedDescription)
+                self.presentError(with: error.localizedDescription)
             } else if let loginData = loginData {
                 UserDefaultsManager.shared().token = loginData.token
-                let toDoVC = TodoListVC.create()
-                self.navigationController?.pushViewController(toDoVC, animated: true)
+                self.switchToMainState()
             }
+            self.view.hideLoader()
         }
+    }
+    private func presentError(with massage: String){
+        self.showAlert(title: "Sorry", message: massage)
+    }
+    private func switchToMainState(){
+        let ToDoVC = TodoListVC.create()
+        let navigationController = UINavigationController(rootViewController: ToDoVC)
+        AppDelegate.shared().window?.rootViewController = navigationController
     }
     
     @objc fileprivate func signUpPressed(){

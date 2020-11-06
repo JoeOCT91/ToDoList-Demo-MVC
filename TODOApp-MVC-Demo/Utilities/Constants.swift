@@ -17,11 +17,13 @@ struct Storyboards {
 
 // View Controllers
 struct ViewControllers {
-    static let signUpVC     = "SignUpVC"
-    static let signInVC     = "SignInVC"
-    static let todoListVC   = "TodoListVC"
-    static let newTaskVC    = "NewTaskVC"
-    static let profileVC    = "ProfileVC"
+    static let signUpVC         = "SignUpVC"
+    static let signInVC         = "SignInVC"
+    static let todoListVC       = "TodoListVC"
+    static let newTaskVC        = "NewTaskVC"
+    static let profileVC        = "ProfileVC"
+    static let editTaskVc       = "EditTaskVC"
+    static let editProfileVC    = "EditProfileVC"
 }
 
 // Urls
@@ -31,6 +33,9 @@ struct URLs {
     static let login    = base + "/user/login"
     static let signup   = base + "/user/register"
     static let newTask  = base + "/task"
+    static let upload   = base + "/user/me/avatar"
+    static let editUser = base + "/user/me"
+    
 }
 
 // Header Keys

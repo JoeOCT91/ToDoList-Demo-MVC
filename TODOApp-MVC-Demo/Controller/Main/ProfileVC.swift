@@ -8,18 +8,32 @@
 
 import UIKit
 
-class ProfileVC: UIViewController {
+class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    
+    
+    
     
     fileprivate var tableView = UITableView()
     var user: UserData!
     var labelFont: UIFont = UIFont.systemFont(ofSize: 22, weight: .medium)
+    let imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        configureNavBar()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
     }
     
+    
+    
     //MARK:- Private Methods
+    private func configureNavBar(){
+        let uploadButton = UIBarButtonItem(title: "Upload Image", style: .done, target: self, action: #selector(uploadImagePressed))
+        navigationItem.rightBarButtonItem = uploadButton
+    }
     fileprivate func configureTableView(){
         view.addSubview(tableView)
         tableView.register(ProfilePictureTableViewCell.self, forCellReuseIdentifier: ProfilePictureTableViewCell.identifier)
@@ -36,6 +50,9 @@ class ProfileVC: UIViewController {
         ])
     }
     
+    private func presentError(with message: String) {
+        self.showAlert(title: "Sorry", message: message)
+    }
     
     //MARK:- Public Methods
     
@@ -44,12 +61,93 @@ class ProfileVC: UIViewController {
         return profileVC
     }
 }
-extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
+extension ProfileVC: UITableViewDelegate, UITableViewDataSource, EditProfileDelgate {
+    
+    
+    func editProfilePressed(_ cell: ProfilePictureTableViewCell) {
+        //        let editProfileVc = EditProfileVC.create()
+        //        editProfileVc.modalPresentationStyle    = .overCurrentContext
+        //        editProfileVc.modalTransitionStyle      = .crossDissolve
+        //        editProfileVc.userData = user
+        //        editProfileVc.complation = { user in
+        //            self.tableView.reloadData()
+        //            self.user = user
+        //        }
+        //        present(editProfileVc, animated: true)
+        promptForAnswer()
+    }
+    func promptForAnswer() {
+        let editAlert = UIAlertController(title: "Edit eser information", message: nil, preferredStyle: .alert)
+        editAlert.addTextField { (textField : UITextField) in
+            textField.text = self.user.name
+        }
+        editAlert.addTextField { (textField : UITextField) in
+            textField.text = self.user.email
+        }
+        editAlert.addTextField { (textField : UITextField) in
+            textField.text = String(self.user.age)
+        }
+        
+        let submitAction = UIAlertAction(title: "Save", style: .default) {
+            [unowned editAlert, weak self] _ in
+            guard let self = self else { return }
+            self.user.name  = editAlert.textFields![0].text!
+            self.user.email = editAlert.textFields![1].text!
+            self.user.age   = Int(editAlert.textFields![2].text!)!
+            APIManager.updateUserProfile(with: self.user) { (result) in
+                self.tableView.reloadData()
+                }
+            }
+        editAlert.addAction(submitAction)
+        present(editAlert, animated: true)
+    }
+    
+    @objc func uploadImagePressed(_ cell: ProfilePictureTableViewCell) {
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Photo Gallery", style: .default, handler: { (button) in
+            self.imagePicker.sourceType = .camera
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Photo Gallery", style: .default, handler: { (button) in
+            self.imagePicker.sourceType = .photoLibrary
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:
+        [UIImagePickerController.InfoKey : Any]) {
+        guard let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
+        view.showLoader()
+        APIManager .uploadProfileImage(with: pickedImage) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .failure :
+                self.view.hideLoader()
+                self.presentError(with: "Unable to upload new profile image")
+                return
+            case .success:
+                self.updateProfilePic(with: pickedImage)
+                self.view.hideLoader()
+            }
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func updateProfilePic(with image: UIImage){
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell  = tableView.cellForRow(at: indexPath) as! ProfilePictureTableViewCell
+        cell.setProfileImage(image: image)
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
@@ -58,7 +156,8 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: ProfilePictureTableViewCell.identifier,
                                                      for: indexPath) as! ProfilePictureTableViewCell
-            cell.configure(userID: user.id)
+            cell.configure(userID: user.id, name: user.name)
+            cell.delgate = self
             
             return cell
         } else if indexPath.row == 1 {
@@ -95,28 +194,26 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
                 logoutButton.widthAnchor.constraint(equalToConstant: 150),
                 logoutButton.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor)
             ])
-            logoutButton.addTarget(self, action: #selector(checkTapped), for: .touchUpInside)
+            logoutButton.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
             
-        return cell
+            return cell
         }
     }
     
-    @objc func checkTapped() {
+    @objc private func signOutTapped() {
         let signoutAlert = UIAlertController(title: "Sign Out", message: "Are you sure to sign out", preferredStyle: UIAlertController.Style.alert)
-
+        
         signoutAlert.addAction(UIAlertAction(title: "Sign out", style: .default, handler: { (action: UIAlertAction!) in
             UserDefaultsManager.shared().token = nil
             let signinVC = SignInVC.create()
-            self.navigationController?.viewControllers.removeAll()
             let navigationController = UINavigationController(rootViewController: signinVC)
-            AppDelegate.shared().window?.rootViewController?.dismiss(animated: false, completion: nil)
             AppDelegate.shared().window?.rootViewController = navigationController
         }))
-
+        
         signoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-    
+            
         }))
-
+        
         present(signoutAlert, animated: true, completion: nil)
     }
 }

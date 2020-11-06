@@ -17,11 +17,11 @@ class TodoListVC: UIViewController {
     fileprivate var tasks: [TaskData]   = []
     fileprivate var user: UserData!
     
+    
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         getUser()
-        
         configureNavigation()
         configureNewTaskButton()
         configureTableView()
@@ -29,13 +29,13 @@ class TodoListVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(recivedNewTask(_:)), name: .didRecivedNewTask, object: nil)
     }
     
-    @objc fileprivate func recivedNewTask(_ notification: Notification){
+    @objc private func recivedNewTask(_ notification: Notification){
         guard let newTask = notification.userInfo?["newTask"] as? TaskData  else { return }
         tasks.append(newTask)
         tableView.reloadData()
     }
     
-    fileprivate func configureNewTaskButton(){
+    private func configureNewTaskButton(){
         view.addSubview(newTaskButton)
         newTaskButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         newTaskButton.translatesAutoresizingMaskIntoConstraints = false
@@ -60,9 +60,11 @@ class TodoListVC: UIViewController {
                 self.tasks = tasks.tasks
                 DispatchQueue.main.async { self.tableView.reloadData() }
             }
+            self.view.hideLoader()
         }
     }
     fileprivate func getUser() {
+        view.showLoader()
         APIManager.getUserInfo { [weak self] (error, user) in
             guard let self = self else { return }
             if let error = error {
@@ -98,12 +100,12 @@ class TodoListVC: UIViewController {
         profileVC.user = user
         navigationController?.pushViewController(profileVC, animated: true)
     }
-
+    
     @objc fileprivate func newTaskPressed(){
         let newTaskVC = NewTaskVC.create()
         navigationController?.pushViewController(newTaskVC, animated: true)
     }
-
+    
     // MARK:- Public Methods
     class func create() -> TodoListVC {
         let todoListVC: TodoListVC = UIViewController.create(storyboardName: Storyboards.main, identifier: ViewControllers.todoListVC)
@@ -112,15 +114,30 @@ class TodoListVC: UIViewController {
 }
 
 extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegte {
+    func editButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
+        //        let editTaskVC = EditTaskVC.create()
+        //        editTaskVC.modalPresentationStyle   = .overCurrentContext
+        //        editTaskVC.modalTransitionStyle     = .crossDissolve
+        //        //view.addSubview(blur)
+        //        self.present(editTaskVC, animated: true)
+    }
+    
     
     func deleteButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
-        if let indexPath = tableView.indexPath(for: cell) {
-            tasks.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .left)
-            APIManager.deleteTask(with: task) { (error, data) in
-                // Need to refactor this complation
+        let deleteTaskAlert = UIAlertController(title: "Delete task", message: "Are you sure you want to delete This task",
+                                                preferredStyle: UIAlertController.Style.alert)
+        deleteTaskAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self](action: UIAlertAction!) in
+            guard let self = self else { return }
+            if let indexPath = self.tableView.indexPath(for: cell) {
+                self.tasks.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+                APIManager.deleteTask(with: task) { (error, data) in
+                    // Need to refactor this complation
+                }
             }
-        }
+        }))
+        deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(deleteTaskAlert, animated: true, completion: nil)
     }
     
     func statusButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
@@ -132,7 +149,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegt
             var editedTask              = task
             editedTask.status           = isDone
             APIManager.editTask(with: editedTask) { (error, editedTask) in
-               //May implment if success update tasks array then reload table
+                //May implment if success update tasks array then reload table
             }
         }
     }

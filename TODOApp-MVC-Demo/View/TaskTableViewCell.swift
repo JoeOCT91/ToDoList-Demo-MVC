@@ -10,6 +10,7 @@ import UIKit
 protocol TaskCellDelegte: class {
     func statusButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell)
     func deleteButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell)
+    func editButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell)
 }
 
 class TaskTableViewCell: UITableViewCell {
@@ -20,7 +21,7 @@ class TaskTableViewCell: UITableViewCell {
     //MARK:- Private Proprties
     fileprivate var cellTask: TaskData!
     fileprivate var statusColor             = UIView()
-    fileprivate var taskBodyLabel                       = UILabel()
+    fileprivate var taskBodyLabel           = UILabel()
     fileprivate var taskStatusButton        = UIButton()
     fileprivate var editTaskButton          = UIButton()
     fileprivate var deleteTaskButton        = UIButton()
@@ -50,11 +51,16 @@ class TaskTableViewCell: UITableViewCell {
         self.contentView.frame = insetContentViewFrame
         self.selectedBackgroundView?.frame = insetContentViewFrame
     }
-    @objc func statusButtonPressed(){
+    
+    //MARK:- Delgation Functions
+    @objc fileprivate func statusButtonPressed(){
         delegte?.statusButtonPressed(cellTask, self)
     }
-    @objc func deleteButtonPressed(){
+    @objc fileprivate func deleteButtonPressed(){
         delegte?.deleteButtonPressed(cellTask, self)
+    }
+    @objc fileprivate func editButtonPressed(){
+        delegte?.editButtonPressed(cellTask, self)
     }
     
     func setCell(task: TaskData){
@@ -121,6 +127,8 @@ class TaskTableViewCell: UITableViewCell {
         let largeBoldDoc = UIImage(systemName: "square.and.pencil", withConfiguration: largeSF)
         editTaskButton.setImage(largeBoldDoc, for: .normal)
         
+        editTaskButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
+
         editTaskButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             editTaskButton.centerXAnchor.constraint(equalTo: taskStatusButton.centerXAnchor),

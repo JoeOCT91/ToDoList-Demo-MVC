@@ -46,7 +46,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WZ-x3-pU2">
                                 <rect key="frame" x="25" y="335.66666666666669" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -87,6 +87,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="emailLabel" destination="3WZ-x3-pU2" id="2we-gD-aEo"/>
                         <outlet property="emailTextField" destination="EIn-el-xAk" id="eaP-fA-SWI"/>
                         <outlet property="forgetPasswordButton" destination="kkf-xI-QTU" id="DBS-GS-Sl4"/>
                         <outlet property="passwordLabel" destination="OZN-K6-0Z2" id="cTQ-Mv-Bc3"/>

@@ -16,6 +16,13 @@ class NewTaskVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSaveTaskButton()
+        congigureTaskBodyTextView()
+    }
+    fileprivate func congigureTaskBodyTextView(){
+        taskBodyTextView.clipsToBounds      = true
+        taskBodyTextView.layer.cornerRadius = 8
+        taskBodyTextView.layer.borderWidth  = 1
+        taskBodyTextView.layer.borderColor  = UIColor.systemGray3.cgColor
     }
     fileprivate func configureSaveTaskButton() {
         saveTaskButton.addTarget(self, action: #selector(saveTaskPressed), for: .touchUpInside)
