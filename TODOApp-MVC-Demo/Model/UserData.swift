@@ -10,9 +10,9 @@ import Foundation
 
 struct UserData: Codable {
     
+    var age: Int
     var id: String
     var name, email: String
-    var age: Int
     
     enum CodingKeys: String, CodingKey {
         case age, name, email

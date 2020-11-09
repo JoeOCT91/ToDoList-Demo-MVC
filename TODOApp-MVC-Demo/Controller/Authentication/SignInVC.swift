@@ -31,12 +31,14 @@ class SignInVC: UIViewController {
         configurTextFields()
         configureButtons()
         navigationController?.navigationBar.isHidden = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_: )))
-        view.addGestureRecognizer(tap)
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_: )))
+        //view.addGestureRecognizer(tap)
+        self.dimissKeyboardWhenTap()
     }
-    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
-        view.endEditing(true)
-    }
+    
+//    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+//        view.endEditing(true)
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
@@ -46,7 +48,7 @@ class SignInVC: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    fileprivate func configurTextFields(){
+    private func configurTextFields(){
         emailTextField.delegate                 = self
         passwordTextField.delegate              = self
         emailTextField.layer.borderWidth        = 1
@@ -59,10 +61,9 @@ class SignInVC: UIViewController {
         passwordTextField.layer.cornerRadius    = 8
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-
     }
     
-    @objc fileprivate func textFieldDidChange(_ textField: UITextField) {
+    @objc private func textFieldDidChange(_ textField: UITextField) {
         passwordLabel.text  = ""
         emailLabel.text     = ""
         
@@ -70,16 +71,13 @@ class SignInVC: UIViewController {
             if textField == passwordTextField {
                 password = text
                 passwordLabel.text = Validation.isPasswordValid(password) ?  "" : "Password is not valid"
-                print("password is \(password)")
             }
             if textField == emailTextField {
                 email = text
                 emailLabel.text = Validation.isValidEmail(email) ? "" : "Email is not valid"
-                print("email is \(email)")
             }
         }
         if Validation.isValidEmail(email) && Validation.isPasswordValid(password) {
-            //can add some animation
             signInButton.isEnabled          = true
             signInButton.backgroundColor    = UIColor.systemBlue
         } else {
@@ -88,7 +86,7 @@ class SignInVC: UIViewController {
         }
     }
         
-    fileprivate func configureButtons(){
+    private func configureButtons(){
         signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
         signInButton.clipsToBounds      = true
@@ -97,7 +95,7 @@ class SignInVC: UIViewController {
         signInButton.backgroundColor    = UIColor.systemGray2
     }
     
-    @objc fileprivate func signInPressed(){
+    @objc private func signInPressed(){
         if let text = emailTextField.text {
             email = text
         }
@@ -105,23 +103,27 @@ class SignInVC: UIViewController {
             password = text
         }
         view.showLoader()
-        APIManager.login(with: email, password: password) { [weak self] (error, loginData) in
+        APIManager.login(email: email, password: password) { [weak self] (result) in
             guard let self = self else { return }
-            if let error = error {
-                self.presentError(with: error.localizedDescription)
-            } else if let loginData = loginData {
+            switch result {
+            case.success(let loginData):
                 UserDefaultsManager.shared().token = loginData.token
+                Authorization.authValue = "Bearer " + (UserDefaultsManager.shared().token ?? "")
+                self.view.hideLoader()
                 self.switchToMainState()
+            case.failure(let error):
+                self.view.hideLoader()
+                self.presentError(with: error.localizedDescription)
             }
-            self.view.hideLoader()
         }
     }
+
     private func presentError(with massage: String){
         self.showAlert(title: "Sorry", message: massage)
     }
     private func switchToMainState(){
-        let ToDoVC = TodoListVC.create()
-        let navigationController = UINavigationController(rootViewController: ToDoVC)
+        let toDoVC = TodoListVC.create()
+        let navigationController = UINavigationController(rootViewController: toDoVC)
         AppDelegate.shared().window?.rootViewController = navigationController
     }
     

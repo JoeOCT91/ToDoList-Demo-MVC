@@ -51,26 +51,32 @@ class TodoListVC: UIViewController {
             newTaskButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
     fileprivate func fetshData(){
-        APIManager.getTasks { [weak self] (error, tasks) in
+        APIManager.getTasks { [weak self](result) in
             guard let self = self else { return }
-            if let error = error{
+            switch result {
+            case .failure(let error):
                 print(error.localizedDescription)
-            } else if let tasks = tasks{
-                self.tasks = tasks.tasks
-                DispatchQueue.main.async { self.tableView.reloadData() }
+            case .success(let tasksResponse):
+                self.tasks = tasksResponse.tasks
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.view.hideLoader()
+                }
             }
-            self.view.hideLoader()
         }
     }
-    fileprivate func getUser() {
+    
+    private func getUser() {
         view.showLoader()
-        APIManager.getUserInfo { [weak self] (error, user) in
+        APIManager.getUserInfo{ [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+            switch result {
+            case .failure(let error):
                 print(error.localizedDescription)
-            } else if let user = user {
-                self.user = user
+            case .success(let userData):
+                self.user = userData
             }
         }
     }
@@ -131,9 +137,12 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegt
             if let indexPath = self.tableView.indexPath(for: cell) {
                 self.tasks.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .left)
-                APIManager.deleteTask(with: task) { (error, data) in
-                    // Need to refactor this complation
+                APIManager.deleteTask(with: task) { (result) in
+                    
                 }
+//                APIManager.deleteTask(with: task) { (error, data) in
+//                    // Need to refactor this complation
+//                }
             }
         }))
         deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -148,9 +157,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegt
             tasks[indexPath.row].status = isDone
             var editedTask              = task
             editedTask.status           = isDone
-            APIManager.editTask(with: editedTask) { (error, editedTask) in
-                //May implment if success update tasks array then reload table
-            }
+            APIManager.editTask(with: task) { (result) in }
         }
     }
     

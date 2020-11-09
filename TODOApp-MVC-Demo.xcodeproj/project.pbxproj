@@ -12,11 +12,14 @@
 		8632BEF2254DE2B00067D945 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF1254DE2B00067D945 /* ProfileVC.swift */; };
 		8632BEF4254DE4590067D945 /* ProfilePictureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */; };
 		8632BEF6254DE79D0067D945 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF5254DE79D0067D945 /* ProfileImage.swift */; };
+		8639DE6F2559626500306C07 /* HttpBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8639DE6E2559626500306C07 /* HttpBody.swift */; };
+		8643E04F25580EA400E79D91 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8643E04E25580EA400E79D91 /* APIRouter.swift */; };
 		866BC17C2552A49000972F0F /* String+trimming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BC17B2552A49000972F0F /* String+trimming.swift */; };
 		866BC17E2552A8C800972F0F /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BC17D2552A8C800972F0F /* UIViewController+Alert.swift */; };
 		866BC1802552C75B00972F0F /* UIView+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BC17F2552C75B00972F0F /* UIView+Loader.swift */; };
 		866CEC112555A2DF00C9310B /* UpdateprofileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866CEC102555A2DF00C9310B /* UpdateprofileResponse.swift */; };
-		866CEC132555A4B000C9310B /* g.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866CEC122555A4B000C9310B /* g.swift */; };
+		866CEC152555BA0C00C9310B /* ErrorMeesages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866CEC142555BA0C00C9310B /* ErrorMeesages.swift */; };
+		866CEC172557204B00C9310B /* UIViewController+DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866CEC162557204B00C9310B /* UIViewController+DismissKeyboard.swift */; };
 		86A2FA5E254B52A5004DB3D9 /* TaskData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2FA5D254B52A5004DB3D9 /* TaskData.swift */; };
 		86A2FA60254C0572004DB3D9 /* TasksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2FA5F254C0572004DB3D9 /* TasksResponse.swift */; };
 		86A2FA62254C11F9004DB3D9 /* NewTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2FA61254C11F9004DB3D9 /* NewTaskVC.swift */; };
@@ -47,11 +50,14 @@
 		8632BEF1254DE2B00067D945 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureTableViewCell.swift; sourceTree = "<group>"; };
 		8632BEF5254DE79D0067D945 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
+		8639DE6E2559626500306C07 /* HttpBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpBody.swift; sourceTree = "<group>"; };
+		8643E04E25580EA400E79D91 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		866BC17B2552A49000972F0F /* String+trimming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+trimming.swift"; sourceTree = "<group>"; };
 		866BC17D2552A8C800972F0F /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		866BC17F2552C75B00972F0F /* UIView+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loader.swift"; sourceTree = "<group>"; };
 		866CEC102555A2DF00C9310B /* UpdateprofileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateprofileResponse.swift; sourceTree = "<group>"; };
-		866CEC122555A4B000C9310B /* g.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = g.swift; sourceTree = "<group>"; };
+		866CEC142555BA0C00C9310B /* ErrorMeesages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMeesages.swift; sourceTree = "<group>"; };
+		866CEC162557204B00C9310B /* UIViewController+DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+DismissKeyboard.swift"; sourceTree = "<group>"; };
 		86A2FA5D254B52A5004DB3D9 /* TaskData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskData.swift; sourceTree = "<group>"; };
 		86A2FA5F254C0572004DB3D9 /* TasksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksResponse.swift; sourceTree = "<group>"; };
 		86A2FA61254C11F9004DB3D9 /* NewTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskVC.swift; sourceTree = "<group>"; };
@@ -148,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				B76E56BE2548AFA000C13D43 /* APIManager.swift */,
+				8643E04E25580EA400E79D91 /* APIRouter.swift */,
+				8639DE6E2559626500306C07 /* HttpBody.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -165,10 +173,10 @@
 			children = (
 				B76E56B42548A63E00C13D43 /* UIViewController+Storyboard.swift */,
 				8632BEEF254DC87A0067D945 /* Notification.Name+MoreNames.swift */,
+				866CEC162557204B00C9310B /* UIViewController+DismissKeyboard.swift */,
 				866BC17B2552A49000972F0F /* String+trimming.swift */,
 				866BC17D2552A8C800972F0F /* UIViewController+Alert.swift */,
 				866BC17F2552C75B00972F0F /* UIView+Loader.swift */,
-				866CEC122555A4B000C9310B /* g.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -219,6 +227,7 @@
 			children = (
 				B76E56C22548B2B100C13D43 /* Constants.swift */,
 				86CF460B254EDBAE00540CB5 /* Validation.swift */,
+				866CEC142555BA0C00C9310B /* ErrorMeesages.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -381,20 +390,23 @@
 				B76E56BF2548AFA000C13D43 /* APIManager.swift in Sources */,
 				86CF460E25505D6F00540CB5 /* EditTaskVC.swift in Sources */,
 				B76E56952548A24A00C13D43 /* TodoListVC.swift in Sources */,
+				8643E04F25580EA400E79D91 /* APIRouter.swift in Sources */,
 				866CEC112555A2DF00C9310B /* UpdateprofileResponse.swift in Sources */,
+				8639DE6F2559626500306C07 /* HttpBody.swift in Sources */,
 				86A2FA66254C3A9A004DB3D9 /* TaskTableViewCell.swift in Sources */,
 				B76E56912548A24A00C13D43 /* AppDelegate.swift in Sources */,
 				86A2FA5E254B52A5004DB3D9 /* TaskData.swift in Sources */,
 				866BC17E2552A8C800972F0F /* UIViewController+Alert.swift in Sources */,
 				B76E56C52548BACC00C13D43 /* UserData.swift in Sources */,
+				866CEC172557204B00C9310B /* UIViewController+DismissKeyboard.swift in Sources */,
 				8632BEF0254DC87A0067D945 /* Notification.Name+MoreNames.swift in Sources */,
 				8632BEF2254DE2B00067D945 /* ProfileVC.swift in Sources */,
 				866BC17C2552A49000972F0F /* String+trimming.swift in Sources */,
-				866CEC132555A4B000C9310B /* g.swift in Sources */,
 				B76E56B92548A76600C13D43 /* SignInVC.swift in Sources */,
 				86A390B825549A8A0027F530 /* EditProfileVC.swift in Sources */,
 				B76E56BC2548A84600C13D43 /* SignUpVC.swift in Sources */,
 				866BC1802552C75B00972F0F /* UIView+Loader.swift in Sources */,
+				866CEC152555BA0C00C9310B /* ErrorMeesages.swift in Sources */,
 				B76E56C72548BEE100C13D43 /* UserDefaultsManager.swift in Sources */,
 				8632BEF6254DE79D0067D945 /* ProfileImage.swift in Sources */,
 				86A2FA64254C1CE5004DB3D9 /* NewTaskResponse.swift in Sources */,

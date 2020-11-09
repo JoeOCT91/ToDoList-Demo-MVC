@@ -10,14 +10,11 @@ import UIKit
 
 class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    
-    
-    
-    
-    fileprivate var tableView = UITableView()
+    //MARK:- Proprties
     var user: UserData!
-    var labelFont: UIFont = UIFont.systemFont(ofSize: 22, weight: .medium)
-    let imagePicker = UIImagePickerController()
+    private var tableView           = UITableView()
+    private let labelFont: UIFont   = UIFont.systemFont(ofSize: 22, weight: .medium)
+    private let imagePicker         = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +24,12 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         imagePicker.allowsEditing = true
     }
     
-    
-    
     //MARK:- Private Methods
     private func configureNavBar(){
         let uploadButton = UIBarButtonItem(title: "Upload Image", style: .done, target: self, action: #selector(uploadImagePressed))
         navigationItem.rightBarButtonItem = uploadButton
     }
+    
     fileprivate func configureTableView(){
         view.addSubview(tableView)
         tableView.register(ProfilePictureTableViewCell.self, forCellReuseIdentifier: ProfilePictureTableViewCell.identifier)
@@ -194,26 +190,24 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource, EditProfileDelg
                 logoutButton.widthAnchor.constraint(equalToConstant: 150),
                 logoutButton.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor)
             ])
-            logoutButton.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
+            logoutButton.addTarget(self, action: #selector(logOutTapped), for: .touchUpInside)
             
             return cell
         }
     }
     
-    @objc private func signOutTapped() {
+    @objc private func logOutTapped() {
         let signoutAlert = UIAlertController(title: "Sign Out", message: "Are you sure to sign out", preferredStyle: UIAlertController.Style.alert)
         
         signoutAlert.addAction(UIAlertAction(title: "Sign out", style: .default, handler: { (action: UIAlertAction!) in
-            UserDefaultsManager.shared().token = nil
-            let signinVC = SignInVC.create()
-            let navigationController = UINavigationController(rootViewController: signinVC)
-            AppDelegate.shared().window?.rootViewController = navigationController
+            DispatchQueue.main.async {
+                UserDefaultsManager.shared().token = nil
+                let signinVC = SignInVC.create()
+                let navigationController = UINavigationController(rootViewController: signinVC)
+                AppDelegate.shared().window?.rootViewController = navigationController
+            }
         }))
-        
-        signoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-            
-        }))
-        
+        signoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(signoutAlert, animated: true, completion: nil)
     }
 }

@@ -84,7 +84,7 @@ class ProfilePictureTableViewCell: UITableViewCell {
         uploadButton.backgroundColor    = .systemBlue
         uploadButton.tintColor          = .systemBackground
         uploadButton.contentMode        = .center
-        uploadButton.clipsToBounds = true
+        uploadButton.clipsToBounds      = true
         uploadButton.layer.cornerRadius = 8
         
         NSLayoutConstraint.activate([
@@ -118,12 +118,12 @@ class ProfilePictureTableViewCell: UITableViewCell {
     }
 
     private func download (userID: String){
-        APIManager.downloadAvtarImage(with: userID) { [weak self] (error, data) in
+        APIManager.downloadAvtarImage(with: userID){ [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+            switch result {
+            case .failure(let error):
                 print(error.localizedDescription)
-            } else {
-                guard let data = data else { return }
+            case .success(let data):
                 guard let image = UIImage(data: data) else { return }
                 DispatchQueue.main.async {
                     self.profileImage.image = image
@@ -131,5 +131,18 @@ class ProfilePictureTableViewCell: UITableViewCell {
                 }
             }
         }
+//        APIManager.downloadAvtarImage(with: userID) { [weak self] (error, data) in
+//            guard let self = self else { return }
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                guard let data = data else { return }
+//                guard let image = UIImage(data: data) else { return }
+//                DispatchQueue.main.async {
+//                    self.profileImage.image = image
+//                    self.label.removeFromSuperview()
+//                }
+//            }
+//        }
     }
 }

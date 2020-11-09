@@ -24,6 +24,7 @@ class SignUpVC: UIViewController {
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.dimissKeyboardWhenTap()
         configureTextFields()
         configureSignupButton()
 
@@ -32,41 +33,22 @@ class SignUpVC: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
     fileprivate func configureTextFields(){
-        nameTextField.delegate      = self
-        emailTextField.delegate     = self
-        passwordTextField.delegate  = self
-        ageTextField.delegate       = self
+//        nameTextField.delegate      = self
+//        emailTextField.delegate     = self
+//        passwordTextField.delegate  = self
+//        ageTextField.delegate       = self
+        
+        nameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        ageTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
-    fileprivate func configureSignupButton(){
-        signUpButton.addTarget(self, action: #selector(signupPressed), for: .touchUpInside)
-    }
-    @objc fileprivate func signupPressed(){
-        print("pressed")
-        APIManager.signup(with: name, email: email, password: password, age: age) { (error, loginData) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else if let loginData = loginData {
-                print(loginData.token)
-                let todoListVC = TodoListVC.create()
-                self.navigationController?.pushViewController(todoListVC, animated: true)
-            }
-        }
-    }
-
-    // MARK:- Public Methods
-    class func create() -> SignUpVC {
-        let signUpVC: SignUpVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signUpVC)
-        return signUpVC
-    }
-}
-extension SignUpVC: UITextFieldDelegate {
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let text = textField.text, !text.isEmpty{
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text, !text.isEmpty {
             if textField == nameTextField {
                 name = text
             }
-            if textField == emailTextField {
+            if textField ==  emailTextField {
                 email = text
             }
             if textField == passwordTextField {
@@ -77,4 +59,27 @@ extension SignUpVC: UITextFieldDelegate {
             }
         }
     }
+    private func configureSignupButton(){
+        signUpButton.addTarget(self, action: #selector(signupPressed), for: .touchUpInside)
+    }
+    @objc private func signupPressed(){
+        APIManager.signUP(with: name, email: email, password: password, age: age) { (result) in
+            switch result {
+            case .failure(let error):
+                print(error.localizedDescription)
+            case .success(let loginData):
+                UserDefaultsManager.shared().token = loginData.token
+                let toDoListVC = TodoListVC.create()
+                let navigationController = UINavigationController(rootViewController: toDoListVC)
+                AppDelegate.shared().window?.rootViewController = navigationController
+            }
+        }
+    }
+
+    // MARK:- Public Methods
+    class func create() -> SignUpVC {
+        let signUpVC: SignUpVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signUpVC)
+        return signUpVC
+    }
 }
+

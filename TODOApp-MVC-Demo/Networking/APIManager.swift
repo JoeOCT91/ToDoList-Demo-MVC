@@ -2,7 +2,7 @@
 //  APIManager.swift
 //  TODOApp-MVC-Demo
 //
-//  Created by IDEAcademy on 10/27/20.
+//  Created by Yousef Moahmed on 10/27/20.
 //  Copyright © 2020 IDEAEG. All rights reserved.
 //
 
@@ -11,256 +11,67 @@ import Alamofire
 
 class APIManager {
     
-    class func login(with email: String, password: String, completion: @escaping (_ error: Error?, _ loginData: LoginResponse?) -> Void) {
-        
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json"]
-        let params: [String: Any] = [ParameterKeys.email: email,
-                                     ParameterKeys.password: password]
-        
-        AF.request(URLs.login, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let loginData = try decoder.decode(LoginResponse.self, from: data)
-                completion(nil, loginData)
-            } catch let error {
-                if let stringRes = String(data: data, encoding: .utf8) {
-
-                    
-                } else {
-                    print(error)
-                }
-            }
+    //MARK:- Login
+    class func  login(email: String, password: String, completion: @escaping (Result<LoginResponse, Error>)-> ()){
+        request(APIRouter.login(email, password)){ (response) in
+            completion(response)
         }
     }
     
-    class func signup(with name: String, email: String, password: String, age: String,
-                      completion: @escaping (_ error: Error?, _ loginData: LoginResponse?) -> Void) {
-        print(name + email + password + age)
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json"]
-        let params: [String: String] = [ParameterKeys.name: name,
-                                        ParameterKeys.email: email,
-                                        ParameterKeys.password: password,
-                                        ParameterKeys.age: age]
-        
-        AF.request(URLs.signup, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let loginData = try decoder.decode(LoginResponse.self, from: data)
-                completion(nil, loginData)
-            } catch let error {
-                print(error)
-            }
-        }
-    }
-    class func getTasks(completion: @escaping (_ error: Error?, _ loginData: TasksResponse?) -> Void) {
-        
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
-                                    HeaderKeys.authorization: Authorization.key]
-        
-        AF.request(URLs.newTask, method: HTTPMethod.get, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let tasks = try decoder.decode(TasksResponse.self, from: data)
-                completion(nil, tasks)
-            } catch let error {
-                print(error)
-            }
-        }
-    }
-    class func SaveTask(with body: String,
-                        completion: @escaping (_ error: Error?, _ loginData: NewTaskResponse?) -> Void) {
-        
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
-                                    HeaderKeys.authorization: Authorization.key]
-        let params: [String: String] = [ParameterKeys.body: body]
-        
-        AF.request(URLs.newTask, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let newTask = try decoder.decode(NewTaskResponse.self, from: data)
-                completion(nil, newTask)
-            } catch let error {
-                print(error)
-            }
-        }
-    }
-    class func deleteTask(with task: TaskData, completion: @escaping (_ error: Error?, _ data: Data?) -> Void) {
-        let taskEndPoint = URLs.newTask + "/\(task.id)"
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
-                                    HeaderKeys.authorization: Authorization.key]
-        
-        AF.request(taskEndPoint, method: HTTPMethod.delete, headers: headers).response { response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let response = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                guard  let response = try JSONSerialization.jsonObject(with: response, options: []) as? [String : Any] else { return }
-                completion(nil, nil)
-            } catch let error {
-                print(error)
-            }
+    //MARK:- Signup
+    class func signUP(with name: String, email: String, password: String, age: String,
+                      complation: @escaping (Result<LoginResponse, Error>) -> ()) {
+        request(APIRouter.signUP(name, email, password, age)) { (response) in
+            complation(response)
         }
     }
     
-    class func editTask(with task: TaskData, completion: @escaping (_ error: Error?, _ loginData: NewTaskResponse?) -> Void) {
-        let taskEndPoint = URLs.newTask + "/\(task.id)"
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
-                                    HeaderKeys.authorization: Authorization.key]
-        let parameters: [String : Any] = ["completed"   : task.status,
-                                          "description" : task.body]
-        
-        AF.request(taskEndPoint, method: HTTPMethod.put, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let tasks = try decoder.decode(NewTaskResponse.self, from: data)
-                completion(nil, tasks)
-            } catch let error {
-                print(error)
-            }
+    //MARK:- Get TODOS
+    class func getTasks(completion: @escaping (Result<TasksResponse, Error>)-> ()){
+        request(APIRouter.getTodos){ (response) in
+            completion(response)
         }
     }
-    class func updateUserProfile(with user: UserData, completion: @escaping (Result<UserData,Error>) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json",
-                                    HeaderKeys.authorization: Authorization.key]
-        let parameters: [String : Any] = ["age" : user.age,
-                                          "name" : user.name,
-                                          "email" : user.email]
-        
-        AF.request(URLs.editUser, method: HTTPMethod.put, parameters: parameters,
-                   encoding: JSONEncoding.default, headers: headers).response { response in
-            
-            guard response.error == nil else {
-                print(response.error!)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let updateResponse = try decoder.decode(UpdateProfileResponse.self, from: data)
-                completion(.success(updateResponse.data))
-            } catch let error {
-                print(error)
-            }
+    //MARK:- Add New Task
+    class func addNewTask(with body: String,complation: @escaping (Result<NewTaskResponse, Error>) -> ()) {
+        request(APIRouter.newTask(body)) { (response) in
+            complation(response)
         }
     }
-    class func getUserInfo( completion: @escaping (_ error: Error?, _ userData: UserData?) -> Void) {
-        let taskEndPoint = URLs.user + "/me"
-        let headers: HTTPHeaders = [HeaderKeys.authorization: Authorization.key]
-        
-        AF.request(taskEndPoint, method: HTTPMethod.get, headers: headers).response { response in
-            
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let user = try decoder.decode(UserData.self, from: data)
-                completion(nil, user)
-            } catch let error {
-                print(error)
-            }
+    //MARK:- Delete Task
+    class func deleteTask(with task: TaskData, complation: @escaping (Result<Data, Error>) -> ()){
+        request(APIRouter.deleteTask(task)) { (response) in
+            complation(response)
         }
     }
 
-    class func downloadAvtarImage(with userID: String, completion: @escaping (_ error: Error?, _ data: Data?) -> Void) {
-        let avtarEndPoint = URLs.user + "/\(userID)/avatar"
-        AF.request(avtarEndPoint, method: HTTPMethod.get, encoding: JSONEncoding.default).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            completion(nil, data)
+    class func editTask(with task: TaskData, complation: @escaping (Result<NewTaskResponse, Error>) -> ()){
+        request(APIRouter.editTask(task)) { (response) in
+            complation(response)
         }
     }
+    //MARK:- Update Profile Information
+    class func updateUserProfile(with user: UserData, complation: @escaping (Result<UserData, Error>) -> ()) {
+        request(APIRouter.updateUserProfile(user)) { (response) in
+            complation(response)
+        }
+    }
+    class func getUserInfo(complation: @escaping (Result<UserData, Error>) -> ()){
+        request(APIRouter.getUserInfo) { response in
+            complation(response)
+        }
+    }
+       
+    class func downloadAvtarImage (with userID: String, complation: @escaping (Result<Data, Error>) -> ()){
+        AF.request(APIRouter.downloadAvtarImage(userID)).response { (response) in
+            if let data = response.data{ complation(.success(data))
+            } else if let error = response.error { complation(.failure(error)) }
+        }   
+    }
+
+    // Upload user profile image
     class func uploadProfileImage(with image: UIImage, completion: @escaping (Result<Bool,Error>) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: Authorization.key]
+        let headers: HTTPHeaders = [HeaderKeys.authorization: Authorization.authValue]
         let imgData = image.jpegData(compressionQuality: 0.5)!
         let multipartFormData = MultipartFormData()
         multipartFormData.append(imgData, withName: "avatar", fileName: "/ProfileImage.jpg", mimeType: "image/jpg")
@@ -275,5 +86,17 @@ class APIManager {
     }
 }
 
-
-
+extension APIManager{
+    // MARK:- The request function to get results in a closure
+    private static func request<T: Decodable>(_ urlConvertible: URLRequestConvertible, completion:  @escaping (Result<T, Error>) -> ()) {
+        // Trigger the HttpRequest using AlamoFire
+        AF.request(urlConvertible).responseDecodable { (response: AFDataResponse<T>) in
+            switch response.result {
+            case .success(let value):
+                completion(.success(value))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}

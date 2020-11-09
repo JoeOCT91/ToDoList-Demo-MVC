@@ -31,16 +31,27 @@ class NewTaskVC: UIViewController {
     }
     @objc fileprivate func saveTaskPressed(){
         let body = (taskBodyTextView.text ?? "")
-        APIManager.SaveTask(with: body) { [weak self] (error , newTaskResponse) in
+        APIManager.addNewTask(with: body) { [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+            switch result{
+            case .failure(let error):
                 print(error.localizedDescription)
-            } else if let newTaskResponse = newTaskResponse {
-                let newtask: [String : TaskData] = ["newTask" : newTaskResponse.task]
-                NotificationCenter.default.post(name: .didRecivedNewTask, object: nil, userInfo: newtask)
+            case .success(let newTaskResponse):
+                let newTask: [String: TaskData] = ["newTask" : newTaskResponse.task]
+                NotificationCenter.default.post(name: .didRecivedNewTask, object: nil, userInfo: newTask)
                 self.navigationController?.popViewController(animated: true)
             }
-        }  
+        }
+//        APIManager.addTask(with: body) { [weak self] (error , newTaskResponse) in
+//            guard let self = self else { return }
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else if let newTaskResponse = newTaskResponse {
+//                let newtask: [String : TaskData] = ["newTask" : newTaskResponse.task]
+//                NotificationCenter.default.post(name: .didRecivedNewTask, object: nil, userInfo: newtask)
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//        }  
     }
     
     // MARK:- Public Methods
