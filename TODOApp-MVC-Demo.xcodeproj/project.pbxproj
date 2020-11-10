@@ -11,7 +11,6 @@
 		8632BEF0254DC87A0067D945 /* Notification.Name+MoreNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEEF254DC87A0067D945 /* Notification.Name+MoreNames.swift */; };
 		8632BEF2254DE2B00067D945 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF1254DE2B00067D945 /* ProfileVC.swift */; };
 		8632BEF4254DE4590067D945 /* ProfilePictureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */; };
-		8632BEF6254DE79D0067D945 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF5254DE79D0067D945 /* ProfileImage.swift */; };
 		8639DE6F2559626500306C07 /* HttpBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8639DE6E2559626500306C07 /* HttpBody.swift */; };
 		8643E04F25580EA400E79D91 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8643E04E25580EA400E79D91 /* APIRouter.swift */; };
 		866BC17C2552A49000972F0F /* String+trimming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BC17B2552A49000972F0F /* String+trimming.swift */; };
@@ -49,7 +48,6 @@
 		8632BEEF254DC87A0067D945 /* Notification.Name+MoreNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+MoreNames.swift"; sourceTree = "<group>"; };
 		8632BEF1254DE2B00067D945 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureTableViewCell.swift; sourceTree = "<group>"; };
-		8632BEF5254DE79D0067D945 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		8639DE6E2559626500306C07 /* HttpBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpBody.swift; sourceTree = "<group>"; };
 		8643E04E25580EA400E79D91 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		866BC17B2552A49000972F0F /* String+trimming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+trimming.swift"; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 		B76E56A92548A2EA00C13D43 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8632BEF5254DE79D0067D945 /* ProfileImage.swift */,
 				86A2FA65254C3A9A004DB3D9 /* TaskTableViewCell.swift */,
 				8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */,
 			);
@@ -408,7 +405,6 @@
 				866BC1802552C75B00972F0F /* UIView+Loader.swift in Sources */,
 				866CEC152555BA0C00C9310B /* ErrorMeesages.swift in Sources */,
 				B76E56C72548BEE100C13D43 /* UserDefaultsManager.swift in Sources */,
-				8632BEF6254DE79D0067D945 /* ProfileImage.swift in Sources */,
 				86A2FA64254C1CE5004DB3D9 /* NewTaskResponse.swift in Sources */,
 				B76E56B52548A63E00C13D43 /* UIViewController+Storyboard.swift in Sources */,
 				B76E56C12548B0FD00C13D43 /* LoginResponse.swift in Sources */,

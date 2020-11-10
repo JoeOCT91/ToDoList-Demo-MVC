@@ -31,14 +31,8 @@ class SignInVC: UIViewController {
         configurTextFields()
         configureButtons()
         navigationController?.navigationBar.isHidden = true
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_: )))
-        //view.addGestureRecognizer(tap)
         self.dimissKeyboardWhenTap()
     }
-    
-//    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
-//        view.endEditing(true)
-//    }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
@@ -51,16 +45,40 @@ class SignInVC: UIViewController {
     private func configurTextFields(){
         emailTextField.delegate                 = self
         passwordTextField.delegate              = self
-        emailTextField.layer.borderWidth        = 1
-        passwordTextField.layer.borderWidth     = 1
-        emailTextField.layer.borderColor        = UIColor.systemGray3.cgColor
-        passwordTextField.layer.borderColor     = UIColor.systemGray3.cgColor
-        passwordTextField.clipsToBounds         = true
-        emailTextField.layer.cornerRadius       = 8
-        emailTextField.clipsToBounds            = true
-        passwordTextField.layer.cornerRadius    = 8
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        setShadows(textField: emailTextField)
+        setShadows(textField: passwordTextField)
+    }
+    
+    private func setShadows(textField: UITextField){
+        // corner radius
+        //textField.borderStyle = .none
+        textField.layer.cornerRadius = 8
+
+        // border
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.systemGray3.withAlphaComponent(0.5).cgColor
+
+        // shadow
+        textField.layer.shadowColor = UIColor.gray.cgColor
+        textField.layer.shadowOffset = CGSize(width: 0, height: 3)
+        textField.layer.shadowOpacity = 0.7
+        textField.layer.shadowRadius = 4.0
+        
+        textField.layer.shadowPath = UIBezierPath(roundedRect: textField.bounds, cornerRadius: 4).cgPath
+        
+        let paddingView : UIImageView = UIImageView(frame: .zero)
+        let profileIconConfig   = UIImage.SymbolConfiguration(pointSize: 22, weight: .medium, scale: .large)
+        
+        paddingView.preferredSymbolConfiguration = profileIconConfig
+        paddingView.image = (textField == emailTextField) ? UIImage(systemName: "envelope.circle") : UIImage(systemName: "lock.circle")
+        
+        paddingView.tintColor = .systemGray3
+        paddingView.contentMode = .right
+        
+        textField.leftView = paddingView
+        textField.leftViewMode = UITextField.ViewMode.always
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {

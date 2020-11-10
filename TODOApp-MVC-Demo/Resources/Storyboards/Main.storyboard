@@ -55,7 +55,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwF-kp-rVA">
-                                <rect key="frame" x="100" y="657" width="214" height="55"/>
+                                <rect key="frame" x="100" y="607" width="214" height="55"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="PMH-Is-4pc"/>
@@ -65,7 +65,7 @@
                                 <state key="normal" title="Save"/>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Wt-nD-LD0">
-                                <rect key="frame" x="20" y="144" width="374" height="488"/>
+                                <rect key="frame" x="20" y="144" width="374" height="388"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
@@ -85,8 +85,8 @@
                             <constraint firstItem="9Wt-nD-LD0" firstAttribute="top" secondItem="kQT-zu-epu" secondAttribute="top" constant="100" id="UCR-wK-fVO"/>
                             <constraint firstItem="9Wt-nD-LD0" firstAttribute="leading" secondItem="kQT-zu-epu" secondAttribute="leading" constant="20" id="WgT-VY-nP3"/>
                             <constraint firstItem="gwF-kp-rVA" firstAttribute="leading" secondItem="kQT-zu-epu" secondAttribute="leading" constant="100" id="h05-hY-csI"/>
-                            <constraint firstItem="gwF-kp-rVA" firstAttribute="top" secondItem="9Wt-nD-LD0" secondAttribute="bottom" constant="25" id="nGn-tl-oLb"/>
-                            <constraint firstItem="kQT-zu-epu" firstAttribute="bottom" secondItem="gwF-kp-rVA" secondAttribute="bottom" constant="150" id="tWo-uW-owX"/>
+                            <constraint firstItem="gwF-kp-rVA" firstAttribute="top" secondItem="9Wt-nD-LD0" secondAttribute="bottom" constant="75" id="nGn-tl-oLb"/>
+                            <constraint firstItem="kQT-zu-epu" firstAttribute="bottom" secondItem="gwF-kp-rVA" secondAttribute="bottom" constant="200" id="tWo-uW-owX"/>
                             <constraint firstItem="kQT-zu-epu" firstAttribute="trailing" secondItem="9Wt-nD-LD0" secondAttribute="trailing" constant="20" id="xfL-jZ-ioP"/>
                             <constraint firstItem="kQT-zu-epu" firstAttribute="trailing" secondItem="gwF-kp-rVA" secondAttribute="trailing" constant="100" id="ycd-Pp-K7R"/>
                         </constraints>

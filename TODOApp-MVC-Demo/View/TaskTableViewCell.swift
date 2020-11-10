@@ -19,13 +19,14 @@ class TaskTableViewCell: UITableViewCell {
     weak var delegte: TaskCellDelegte?
     
     //MARK:- Private Proprties
+    private let shadowView = UIView(frame: .zero)
     fileprivate var cellTask: TaskData!
     fileprivate var statusColor             = UIView()
     fileprivate var taskBodyLabel           = UILabel()
     fileprivate var taskStatusButton        = UIButton()
     fileprivate var editTaskButton          = UIButton()
     fileprivate var deleteTaskButton        = UIButton()
-    fileprivate let padding: CGFloat        = 8
+    fileprivate let padding: CGFloat        = 6
     fileprivate let largeSF                 = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium, scale: .default)
     fileprivate var statusSF                = "checkmark.square.fill"
 
@@ -33,6 +34,7 @@ class TaskTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubViews()
+        configureCellShadow()
         configureContentView()
         configureTaskStatusButton()
         configureEditTaskButton()
@@ -47,9 +49,12 @@ class TaskTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let contentViewFrame = self.contentView.frame
-        let insetContentViewFrame = contentViewFrame.inset(by: UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8))
+        let insetContentViewFrame = contentViewFrame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
         self.contentView.frame = insetContentViewFrame
-        self.selectedBackgroundView?.frame = insetContentViewFrame
+        self.selectedBackgroundView?.frame = CGRect.zero
+
+        shadowView.frame = insetContentViewFrame
+        shadowView.layer.shadowPath = UIBezierPath(roundedRect: shadowView.frame, cornerRadius: 8).cgPath
     }
     
     //MARK:- Delgation Functions
@@ -78,18 +83,28 @@ class TaskTableViewCell: UITableViewCell {
     }
     
     fileprivate func configureContentView(){
-        self.contentView.layer.borderColor      = UIColor.systemGray3.cgColor
-        self.contentView.layer.borderWidth      = 1.0
+        self.contentView.layer.borderColor      = UIColor.systemGray3.withAlphaComponent(0.25).cgColor
+        self.contentView.layer.borderWidth      = 0.75
         self.contentView.layer.masksToBounds    = true
         self.contentView.layer.cornerRadius     = 8
     }
     
     fileprivate func addSubViews(){
+        self.addSubview(shadowView)
         contentView.addSubview(taskBodyLabel)
         contentView.addSubview(taskStatusButton)
         contentView.addSubview(editTaskButton)
         contentView.addSubview(deleteTaskButton)
         contentView.addSubview(statusColor)
+    }
+    
+    private func configureCellShadow(){
+        self.sendSubviewToBack(shadowView)
+        contentView.backgroundColor = .systemBackground
+        shadowView.layer.shadowColor = UIColor.systemGray.cgColor
+        shadowView.layer.shadowOffset = CGSize(width: -8, height: -8)
+        shadowView.layer.shadowRadius = 3
+        shadowView.layer.shadowOpacity = 0.75
     }
     
     fileprivate func configure(){
