@@ -7,6 +7,7 @@
 //
 protocol SignInViewDelegate: NSObject {
     func switchToMainState()
+    func presentLoader(isVisable: Bool)
     func presentError(with massage: String)
     func setEmailErrorLabel(message: String)
     func setPasswordErrorLabel(message: String)
@@ -46,16 +47,17 @@ class SignInPresenter {
     }
     
     func loginCall(email: String, password: String){
+        signInViewDelgate?.presentLoader(isVisable: true)
         APIManager.login(email: email, password: password) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case.success(let loginData):
                 UserDefaultsManager.shared().token = loginData.token
                 Authorization.authValue = "Bearer " + (UserDefaultsManager.shared().token ?? "")
-                //self.view.hideLoader()
+                self.signInViewDelgate?.presentLoader(isVisable: false)
                 self.signInViewDelgate?.switchToMainState()
             case.failure(let error):
-                //self.view.hideLoader()
+                self.signInViewDelgate?.presentLoader(isVisable: false)
                 self.signInViewDelgate?.presentError(with: error.localizedDescription)
             }
         }

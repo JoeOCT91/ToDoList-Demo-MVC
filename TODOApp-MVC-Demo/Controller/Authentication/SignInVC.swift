@@ -74,6 +74,10 @@ class SignInVC: UIViewController, SignInViewDelegate {
         self.showAlert(title: "Sorry", message: massage)
     }
     
+    func presentLoader(isVisable: Bool){
+        isVisable ? view.showLoader() : view.hideLoader()
+    }
+    
     func switchToMainState(){
         let toDoVC = TodoListVC.create()
         let navigationController = UINavigationController(rootViewController: toDoVC)
