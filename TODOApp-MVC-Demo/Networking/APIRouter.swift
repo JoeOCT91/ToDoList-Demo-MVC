@@ -24,7 +24,7 @@ enum APIRouter: URLRequestConvertible{
     
     // MARK: - HttpMethod
     private var method: HTTPMethod {
-        switch self{
+        switch self {
         case .getTodos, .downloadAvtarImage, .getUserInfo:
             return .get
         case .updateUserProfile, .editTask:

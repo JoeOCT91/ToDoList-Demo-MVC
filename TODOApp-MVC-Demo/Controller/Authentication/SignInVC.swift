@@ -2,13 +2,18 @@
 //  SignInVC.swift
 //  TODOApp-MVC-Demo
 //
-//  Created by IDEAcademy on 10/27/20.
+//  Edited by Yousef Mohamed on 11/11/20.
+//  Implmenting MVP
 //  Copyright © 2020 IDEAEG. All rights reserved.
 //
 
 import UIKit
 
-class SignInVC: UIViewController {
+class SignInVC: UIViewController, SignInViewDelegate {
+    
+    //MARK:- Presenter Proprity
+    
+    private let signInPresenter = SignInPresenter()
     
     //MARK:- Outlets
     
@@ -28,10 +33,11 @@ class SignInVC: UIViewController {
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        signInPresenter.setUpSignInViewDelgate(signInViewDelgate: self)
         configurTextFields()
         configureButtons()
         navigationController?.navigationBar.isHidden = true
-        self.dimissKeyboardWhenTap()
+        dimissKeyboardWhenTap()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,18 +48,74 @@ class SignInVC: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
+    func enableSignInButton(isEnable: Bool, color: String){
+        signInButton.isEnabled = isEnable
+        let colors: [String : UIColor] = ["blue" : UIColor.systemBlue, "gray" : UIColor.systemGray2]
+        signInButton.backgroundColor = colors[color]
+    }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text{
+            if textField == passwordTextField { password = text }
+            if textField == emailTextField { email = text }
+        }
+        signInPresenter.validateInputs(with: email, password: password)
+    }
+    
+    func setPasswordErrorLabel(message: String){
+        passwordLabel.text = message
+    }
+    
+    func setEmailErrorLabel(message: String){
+        emailLabel.text = message
+    }
+
+    func presentError(with massage: String){
+        self.showAlert(title: "Sorry", message: massage)
+    }
+    
+    func switchToMainState(){
+        let toDoVC = TodoListVC.create()
+        let navigationController = UINavigationController(rootViewController: toDoVC)
+        AppDelegate.shared().window?.rootViewController = navigationController
+    }
+    
+    // MARK:- Public Methods
+    class func create() -> SignInVC {
+        let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
+        return signInVC
+    }
+
+}
+extension SignInVC {
+    
+    @objc private func signInPressed(){
+        signInPresenter.loginCall(email: email, password: password)
+    }
+    
+    @objc fileprivate func signUpPressed(){
+        let signUpVC = SignUpVC.create()
+        navigationController?.pushViewController(signUpVC, animated: true)
+    }
+    
     private func configurTextFields(){
-        emailTextField.delegate                 = self
-        passwordTextField.delegate              = self
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         setShadows(textField: emailTextField)
         setShadows(textField: passwordTextField)
     }
     
+    private func configureButtons(){
+        signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
+        signInButton.clipsToBounds      = true
+        signInButton.layer.cornerRadius = 8
+        signInButton.isEnabled          = false
+        signInButton.backgroundColor    = UIColor.systemGray2
+    }
+    
     private func setShadows(textField: UITextField){
         // corner radius
-        //textField.borderStyle = .none
         textField.layer.cornerRadius = 8
 
         // border
@@ -79,99 +141,6 @@ class SignInVC: UIViewController {
         
         textField.leftView = paddingView
         textField.leftViewMode = UITextField.ViewMode.always
-    }
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        passwordLabel.text  = ""
-        emailLabel.text     = ""
-        
-        if let text = textField.text, !text.isEmpty{
-            if textField == passwordTextField {
-                password = text
-                passwordLabel.text = Validation.isPasswordValid(password) ?  "" : "Password is not valid"
-            }
-            if textField == emailTextField {
-                email = text
-                emailLabel.text = Validation.isValidEmail(email) ? "" : "Email is not valid"
-            }
-        }
-        if Validation.isValidEmail(email) && Validation.isPasswordValid(password) {
-            signInButton.isEnabled          = true
-            signInButton.backgroundColor    = UIColor.systemBlue
-        } else {
-            signInButton.isEnabled          = false
-            signInButton.backgroundColor    = UIColor.systemGray2
-        }
-    }
-        
-    private func configureButtons(){
-        signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
-        signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
-        signInButton.clipsToBounds      = true
-        signInButton.layer.cornerRadius = 8
-        signInButton.isEnabled          = false
-        signInButton.backgroundColor    = UIColor.systemGray2
-    }
-    
-    @objc private func signInPressed(){
-        if let text = emailTextField.text {
-            email = text
-        }
-        if let text = passwordTextField.text {
-            password = text
-        }
-        view.showLoader()
-        APIManager.login(email: email, password: password) { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case.success(let loginData):
-                UserDefaultsManager.shared().token = loginData.token
-                Authorization.authValue = "Bearer " + (UserDefaultsManager.shared().token ?? "")
-                self.view.hideLoader()
-                self.switchToMainState()
-            case.failure(let error):
-                self.view.hideLoader()
-                self.presentError(with: error.localizedDescription)
-            }
-        }
-    }
-
-    private func presentError(with massage: String){
-        self.showAlert(title: "Sorry", message: massage)
-    }
-    private func switchToMainState(){
-        let toDoVC = TodoListVC.create()
-        let navigationController = UINavigationController(rootViewController: toDoVC)
-        AppDelegate.shared().window?.rootViewController = navigationController
-    }
-    
-    @objc fileprivate func signUpPressed(){
-        let signUpVC = SignUpVC.create()
-        navigationController?.pushViewController(signUpVC, animated: true)
-    }
-
-    // MARK:- Public Methods
-    class func create() -> SignInVC {
-        let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
-        return signInVC
-    }
-
-}
-extension SignInVC: UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.becomeFirstResponder() 
-        passwordLabel.text = ""
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.resignFirstResponder()
-
-    }
-   
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
 }
