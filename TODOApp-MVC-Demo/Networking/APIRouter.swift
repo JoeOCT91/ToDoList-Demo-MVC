@@ -81,7 +81,7 @@ enum APIRouter: URLRequestConvertible{
         
         //Http Headers
         switch self {
-        case .getTodos,.newTask, .updateUserProfile, .editTask, .getUserInfo, .deleteTask:
+        case .getTodos, .newTask, .updateUserProfile, .editTask, .getUserInfo, .deleteTask:
             urlRequest.setValue(Authorization.authValue, forHTTPHeaderField: HeaderKeys.authorization)
         default:
             break

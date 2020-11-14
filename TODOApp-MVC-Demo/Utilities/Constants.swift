@@ -62,3 +62,7 @@ struct ParameterKeys {
 struct UserDefaultsKeys {
     static let token = "UDKToken"
 }
+enum Colors: String {
+    case blue = "blue"
+    case gray = "gray"
+}

@@ -14,7 +14,7 @@ struct HttpBody: Codable {
     private var age: Int?
     private var name: String?
     private var email: String?
-    private var complated: Bool?
+    private var completed: Bool?
     private var description: String?
     
     
@@ -25,7 +25,7 @@ struct HttpBody: Codable {
     }
     init(complated: Bool, description: String) {
         self.description = description
-        self.complated = complated
+        self.completed = complated
     }
     
     func encode() -> Data? {
@@ -33,8 +33,8 @@ struct HttpBody: Codable {
     }
     private func encodeToJSON<T: Codable>(_ body: T) -> Data? {
         do {
-            //let anyEncodable = AnyEncodable(body)
-            let jsonData = try JSONEncoder().encode(body)
+            let anyEncodable = AnyEncodable(body)
+            let jsonData = try JSONEncoder().encode(anyEncodable)
             //let jsonString = String(data: jsonData, encoding: .utf8)!
             //print(jsonString)
             return jsonData

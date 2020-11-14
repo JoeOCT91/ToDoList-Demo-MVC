@@ -50,6 +50,7 @@ class APIManager {
             complation(response)
         }
     }
+    
     //MARK:- Update Profile Information
     class func updateUserProfile(with user: UserData, complation: @escaping (Result<UserData, Error>) -> ()) {
         request(APIRouter.updateUserProfile(user)) { (response) in

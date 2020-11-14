@@ -5,7 +5,7 @@
 //  Created by Yousef Mohamed on 11/11/20.
 //  Copyright © 2020 IDEAEG. All rights reserved.
 //
-protocol SignInViewDelegate: NSObject {
+protocol SignInViewPresenter: NSObject {
     func switchToMainState()
     func presentLoader(isVisable: Bool)
     func presentError(with massage: String)
@@ -17,11 +17,13 @@ protocol SignInViewDelegate: NSObject {
 import Foundation
 class SignInPresenter {
     
-    weak private var signInViewDelgate: SignInViewDelegate?
+    weak private var signInViewDelgate: SignInViewPresenter?
     
-    init() {}
+    init(signInViewDelgate: SignInViewPresenter?) {
+        self.signInViewDelgate = signInViewDelgate
+    }
     
-    func setUpSignInViewDelgate(signInViewDelgate: SignInViewDelegate?){
+    func setUpSignInViewDelgate(signInViewDelgate: SignInViewPresenter?){
         self.signInViewDelgate = signInViewDelgate
     }
     

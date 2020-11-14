@@ -14,9 +14,10 @@ class TodoListVC: UIViewController {
     fileprivate var newTaskButton       = UIButton()
     
     // MARK:- Properties
-    fileprivate var tasks: [TaskData]   = []
+    //fileprivate var tasks: [TaskData]   = []
     fileprivate var user: UserData!
     
+    lazy private var toDoListPresenter = ToDoListPresenter(toDoListDelgate: self)
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
@@ -26,14 +27,8 @@ class TodoListVC: UIViewController {
         configureNewTaskButton()
         configureTableView()
         fetshData()
-        NotificationCenter.default.addObserver(self, selector: #selector(recivedNewTask(_:)), name: .didRecivedNewTask, object: nil)
     }
-    
-    @objc private func recivedNewTask(_ notification: Notification){
-        guard let newTask = notification.userInfo?["newTask"] as? TaskData  else { return }
-        tasks.append(newTask)
-        tableView.reloadData()
-    }
+
     
     private func configureNewTaskButton(){
         view.addSubview(newTaskButton)
@@ -47,25 +42,12 @@ class TodoListVC: UIViewController {
             newTaskButton.heightAnchor.constraint(equalToConstant: 55),
             newTaskButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newTaskButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
             newTaskButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
     fileprivate func fetshData(){
-        APIManager.getTasks { [weak self](result) in
-            guard let self = self else { return }
-            switch result {
-            case .failure(let error):
-                print(error.localizedDescription)
-            case .success(let tasksResponse):
-                self.tasks = tasksResponse.tasks
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.view.hideLoader()
-                }
-            }
-        }
+        toDoListPresenter.fetshData()
     }
     
     private func getUser() {
@@ -119,7 +101,44 @@ class TodoListVC: UIViewController {
     }
 }
 
-extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegte {
+extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return toDoListPresenter.tasksCount()
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TaskTableViewCell.identifier, for: indexPath) as! TaskTableViewCell
+        cell.setCell(task: toDoListPresenter.getTask(taskIndex: indexPath.row))
+        cell.delegte = self
+        return cell
+    }
+}
+
+extension TodoListVC: ToDoListViewPresenter {
+    
+    func updateCellContent(task: TaskData, indexPath: IndexPath) {
+        guard let cell  = self.tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
+        cell.setCell(task: task)
+    }
+    
+    func reloadData() {
+        tableView.reloadData()
+    }
+    
+    func presentLoader(isVisable: Bool){
+        isVisable ? view.showLoader() : view.hideLoader()
+    }
+    
+}
+
+extension TodoListVC: TaskCellDelegte {
+    
+    func statusButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        toDoListPresenter.updateTaskStatus(taskIndex: indexPath.row, task: task)
+    }
+    
     func editButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
         //        let editTaskVC = EditTaskVC.create()
         //        editTaskVC.modalPresentationStyle   = .overCurrentContext
@@ -128,47 +147,19 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource, TaskCellDelegt
         //        self.present(editTaskVC, animated: true)
     }
     
-    
     func deleteButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
-        let deleteTaskAlert = UIAlertController(title: "Delete task", message: "Are you sure you want to delete This task",
-                                                preferredStyle: UIAlertController.Style.alert)
-        deleteTaskAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self](action: UIAlertAction!) in
-            guard let self = self else { return }
-            if let indexPath = self.tableView.indexPath(for: cell) {
-                self.tasks.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .left)
-                APIManager.deleteTask(with: task) { (result) in
-                    
-                }
-//                APIManager.deleteTask(with: task) { (error, data) in
-//                    // Need to refactor this complation
-//                }
-            }
-        }))
-        deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(deleteTaskAlert, animated: true, completion: nil)
+//        let deleteTaskAlert = UIAlertController(title: "Delete task", message: "Are you sure you want to delete This task",
+//                                                preferredStyle: UIAlertController.Style.alert)
+//        deleteTaskAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self] (action: UIAlertAction!) in
+//            guard let self = self else { return }
+//            if let indexPath = self.tableView.indexPath(for: cell) {
+//                self.tasks.remove(at: indexPath.row)
+//                self.tableView.deleteRows(at: [indexPath], with: .left)
+//                APIManager.deleteTask(with: task) { (result) in }
+//            }
+//        }))
+//        deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//        present(deleteTaskAlert, animated: true, completion: nil)
     }
     
-    func statusButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
-        if let indexPath    = tableView.indexPath(for: cell) {
-            guard let cell  = self.tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
-            let isDone = task.status ? false : true
-            cell.setTaskStatus(isDone: isDone)
-            tasks[indexPath.row].status = isDone
-            var editedTask              = task
-            editedTask.status           = isDone
-            APIManager.editTask(with: task) { (result) in }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TaskTableViewCell.identifier, for: indexPath) as! TaskTableViewCell
-        cell.setCell(task: tasks[indexPath.row])
-        cell.delegte = self
-        return cell
-    }
 }

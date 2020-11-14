@@ -9,11 +9,11 @@
 
 import UIKit
 
-class SignInVC: UIViewController, SignInViewDelegate {
+class SignInVC: UIViewController, SignInViewPresenter {
     
     //MARK:- Presenter Proprity
     
-    private let signInPresenter = SignInPresenter()
+    private lazy var signInPresenter = SignInPresenter(signInViewDelgate: self)
     
     //MARK:- Outlets
     
@@ -27,8 +27,8 @@ class SignInVC: UIViewController, SignInViewDelegate {
     
    //MARK:- Proprities
     
-    fileprivate var email    = ""
-    fileprivate var password = ""
+    private var email    = ""
+    private var password = ""
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
@@ -50,7 +50,7 @@ class SignInVC: UIViewController, SignInViewDelegate {
     
     func enableSignInButton(isEnable: Bool, color: String){
         signInButton.isEnabled = isEnable
-        let colors: [String : UIColor] = ["blue" : UIColor.systemBlue, "gray" : UIColor.systemGray2]
+        let colors: [String : UIColor] = [Colors.blue.rawValue : UIColor.systemBlue, Colors.gray.rawValue : UIColor.systemGray2]
         signInButton.backgroundColor = colors[color]
     }
     
@@ -128,20 +128,20 @@ extension SignInVC {
 
         // shadow
         textField.layer.shadowColor = UIColor.gray.cgColor
-        textField.layer.shadowOffset = CGSize(width: 0, height: 3)
+        textField.layer.shadowOffset = CGSize(width: 0, height: 0)
         textField.layer.shadowOpacity = 0.7
-        textField.layer.shadowRadius = 4.0
+        textField.layer.shadowRadius = 3.0
         
         textField.layer.shadowPath = UIBezierPath(roundedRect: textField.bounds, cornerRadius: 4).cgPath
         
         let paddingView : UIImageView = UIImageView(frame: .zero)
-        let profileIconConfig   = UIImage.SymbolConfiguration(pointSize: 22, weight: .medium, scale: .large)
+        let profileIconConfig   = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
         
         paddingView.preferredSymbolConfiguration = profileIconConfig
         paddingView.image = (textField == emailTextField) ? UIImage(systemName: "envelope.circle") : UIImage(systemName: "lock.circle")
         
         paddingView.tintColor = .systemGray3
-        paddingView.contentMode = .right
+        paddingView.contentMode = .center
         
         textField.leftView = paddingView
         textField.leftViewMode = UITextField.ViewMode.always
