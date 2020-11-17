@@ -97,6 +97,7 @@ extension APIManager{
                 completion(.success(value))
             case .failure(let error):
                 completion(.failure(error))
+                let ster = String(data: response.data!, encoding: .utf8)
             }
         }
     }

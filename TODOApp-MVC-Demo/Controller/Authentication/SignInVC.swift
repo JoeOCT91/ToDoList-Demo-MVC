@@ -12,7 +12,6 @@ import UIKit
 class SignInVC: UIViewController, SignInViewPresenter {
     
     //MARK:- Presenter Proprity
-    
     private lazy var signInPresenter = SignInPresenter(signInViewDelgate: self)
     
     //MARK:- Outlets
@@ -33,7 +32,6 @@ class SignInVC: UIViewController, SignInViewPresenter {
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        signInPresenter.setUpSignInViewDelgate(signInViewDelgate: self)
         configurTextFields()
         configureButtons()
         navigationController?.navigationBar.isHidden = true
@@ -97,7 +95,7 @@ extension SignInVC {
         signInPresenter.loginCall(email: email, password: password)
     }
     
-    @objc fileprivate func signUpPressed(){
+    @objc private func signUpPressed(){
         let signUpVC = SignUpVC.create()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
@@ -121,6 +119,7 @@ extension SignInVC {
     private func setShadows(textField: UITextField){
         // corner radius
         textField.layer.cornerRadius = 8
+        textField.backgroundColor = .white
 
         // border
         textField.layer.borderWidth = 1

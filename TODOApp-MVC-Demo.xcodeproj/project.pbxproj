@@ -28,7 +28,7 @@
 		86A2FA64254C1CE5004DB3D9 /* NewTaskResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2FA63254C1CE5004DB3D9 /* NewTaskResponse.swift */; };
 		86A2FA66254C3A9A004DB3D9 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2FA65254C3A9A004DB3D9 /* TaskTableViewCell.swift */; };
 		86A390B825549A8A0027F530 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A390B725549A8A0027F530 /* EditProfileVC.swift */; };
-		86CF460C254EDBAE00540CB5 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF460B254EDBAE00540CB5 /* Validation.swift */; };
+		86CF460C254EDBAE00540CB5 /* ValidatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF460B254EDBAE00540CB5 /* ValidatorManager.swift */; };
 		86CF460E25505D6F00540CB5 /* EditTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF460D25505D6F00540CB5 /* EditTaskVC.swift */; };
 		B76E56912548A24A00C13D43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E56902548A24A00C13D43 /* AppDelegate.swift */; };
 		B76E56952548A24A00C13D43 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E56942548A24A00C13D43 /* TodoListVC.swift */; };
@@ -68,7 +68,7 @@
 		86A2FA63254C1CE5004DB3D9 /* NewTaskResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskResponse.swift; sourceTree = "<group>"; };
 		86A2FA65254C3A9A004DB3D9 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		86A390B725549A8A0027F530 /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
-		86CF460B254EDBAE00540CB5 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		86CF460B254EDBAE00540CB5 /* ValidatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorManager.swift; sourceTree = "<group>"; };
 		86CF460D25505D6F00540CB5 /* EditTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskVC.swift; sourceTree = "<group>"; };
 		91F675E6B4DF70681B4B8BD5 /* Pods_TODOApp_MVC_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TODOApp_MVC_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76E568D2548A24A00C13D43 /* TODOApp-MVC-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TODOApp-MVC-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,10 +122,18 @@
 		8608525C255B487000FDA837 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				8608525D255B48AA00FDA837 /* SignInPresenter.swift */,
+				863C15EC2564603C00294F8C /* Authentication */,
 				863E218D255C8AC80033D920 /* ToDoListPresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		863C15EC2564603C00294F8C /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				8608525D255B48AA00FDA837 /* SignInPresenter.swift */,
+			);
+			name = Authentication;
 			sourceTree = "<group>";
 		};
 		B76E56842548A24A00C13D43 = {
@@ -178,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				B76E56C62548BEE100C13D43 /* UserDefaultsManager.swift */,
+				86CF460B254EDBAE00540CB5 /* ValidatorManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -239,7 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				B76E56C22548B2B100C13D43 /* Constants.swift */,
-				86CF460B254EDBAE00540CB5 /* Validation.swift */,
 				866CEC142555BA0C00C9310B /* ErrorMeesages.swift */,
 			);
 			path = Utilities;
@@ -431,7 +439,7 @@
 				86A2FA62254C11F9004DB3D9 /* NewTaskVC.swift in Sources */,
 				863E218E255C8AC80033D920 /* ToDoListPresenter.swift in Sources */,
 				B76E56C32548B2B100C13D43 /* Constants.swift in Sources */,
-				86CF460C254EDBAE00540CB5 /* Validation.swift in Sources */,
+				86CF460C254EDBAE00540CB5 /* ValidatorManager.swift in Sources */,
 				86A2FA60254C0572004DB3D9 /* TasksResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

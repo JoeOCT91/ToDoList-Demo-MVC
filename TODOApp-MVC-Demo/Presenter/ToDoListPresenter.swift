@@ -6,30 +6,31 @@
 //  Copyright © 2020 IDEAEG. All rights reserved.
 //
 
-protocol ToDoListViewPresenter: NSObject {
+protocol ToDoListView: NSObject {
     func reloadData()
     func presentLoader(isVisable: Bool)
     func updateCellContent(task: TaskData, indexPath: IndexPath)
+    func deleteRow(indexPath: IndexPath)
 }
 
 import Foundation
 
 class ToDoListPresenter {
     
-    weak private var toDoListDelgate: ToDoListViewPresenter?
+    weak private var toDoListView: ToDoListView?
     
     fileprivate var tasks: [TaskData]   = []
     
 
-    init(toDoListDelgate: ToDoListViewPresenter?){
-        self.toDoListDelgate = toDoListDelgate
+    init(toDoListView: ToDoListView?){
+        self.toDoListView = toDoListView
         NotificationCenter.default.addObserver(self, selector: #selector(recivedNewTask(_:)), name: .didRecivedNewTask, object: nil)
     }
     
     @objc private func recivedNewTask(_ notification: Notification) {
         guard let newTask = notification.userInfo?["newTask"] as? TaskData  else { return }
         tasks.append(newTask)
-        toDoListDelgate?.reloadData()
+        toDoListView?.reloadData()
     }
     
     func tasksCount() -> Int{
@@ -45,7 +46,7 @@ class ToDoListPresenter {
         print(newStatus)
         tasks[taskIndex].status = newStatus
         let indexPath = IndexPath(row: taskIndex, section: 0)
-        toDoListDelgate?.updateCellContent(task: tasks[taskIndex], indexPath: indexPath)
+        toDoListView?.updateCellContent(task: tasks[taskIndex], indexPath: indexPath)
         let editedTask = tasks[taskIndex]
         APIManager.editTask(with: editedTask) { _ in }
     }
@@ -57,17 +58,22 @@ class ToDoListPresenter {
             switch result {
             case .failure(let error):
                 print(error.localizedDescription)
-                self.toDoListDelgate?.presentLoader(isVisable: false)
+                self.toDoListView?.presentLoader(isVisable: false)
             case .success(let tasksResponse):
                 self.tasks = tasksResponse.tasks
                 DispatchQueue.main.async {
-                    self.toDoListDelgate?.reloadData()
-                    self.toDoListDelgate?.presentLoader(isVisable: false)
+                    self.toDoListView?.reloadData()
+                    self.toDoListView?.presentLoader(isVisable: false)
                 }
             }
         }
     }
     
-    
-    
+    func delateTask(indexPath: IndexPath?){
+        guard let indexPath = indexPath else { return }
+        APIManager.deleteTask(with: tasks[indexPath.row]) { (result) in }
+        self.tasks.remove(at: indexPath.row)
+        toDoListView?.deleteRow(indexPath: indexPath)
+    }
+  
 }

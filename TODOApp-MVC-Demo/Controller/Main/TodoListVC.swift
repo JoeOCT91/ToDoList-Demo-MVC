@@ -17,7 +17,7 @@ class TodoListVC: UIViewController {
     //fileprivate var tasks: [TaskData]   = []
     fileprivate var user: UserData!
     
-    lazy private var toDoListPresenter = ToDoListPresenter(toDoListDelgate: self)
+    lazy private var toDoListPresenter = ToDoListPresenter(toDoListView: self)
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
@@ -29,7 +29,6 @@ class TodoListVC: UIViewController {
         fetshData()
     }
 
-    
     private func configureNewTaskButton(){
         view.addSubview(newTaskButton)
         newTaskButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .medium)
@@ -46,7 +45,7 @@ class TodoListVC: UIViewController {
         ])
     }
     
-    fileprivate func fetshData(){
+    private func fetshData(){
         toDoListPresenter.fetshData()
     }
     
@@ -63,7 +62,7 @@ class TodoListVC: UIViewController {
         }
     }
     
-    fileprivate func configureNavigation(){
+    private func configureNavigation(){
         title                   = "To Do"
         let profileIconConfig   = UIImage.SymbolConfiguration(pointSize: 33, weight: .medium, scale: .large)
         let profileIcon         = UIImage(systemName: "person.crop.circle", withConfiguration: profileIconConfig)
@@ -115,7 +114,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension TodoListVC: ToDoListViewPresenter {
+extension TodoListVC: ToDoListView {
     
     func updateCellContent(task: TaskData, indexPath: IndexPath) {
         guard let cell  = self.tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
@@ -148,18 +147,20 @@ extension TodoListVC: TaskCellDelegte {
     }
     
     func deleteButtonPressed(_ task: TaskData, _ cell: TaskTableViewCell) {
-//        let deleteTaskAlert = UIAlertController(title: "Delete task", message: "Are you sure you want to delete This task",
-//                                                preferredStyle: UIAlertController.Style.alert)
-//        deleteTaskAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self] (action: UIAlertAction!) in
-//            guard let self = self else { return }
-//            if let indexPath = self.tableView.indexPath(for: cell) {
-//                self.tasks.remove(at: indexPath.row)
-//                self.tableView.deleteRows(at: [indexPath], with: .left)
-//                APIManager.deleteTask(with: task) { (result) in }
-//            }
-//        }))
-//        deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        present(deleteTaskAlert, animated: true, completion: nil)
+        
+        let deleteTaskAlert = UIAlertController(title: "Delete task", message: "Are you sure you want to delete This task",
+                                                preferredStyle: UIAlertController.Style.alert)
+        deleteTaskAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { [weak self] (action: UIAlertAction!) in
+            guard let self = self  else { return }
+            let indexPath = self.tableView.indexPath(for: cell)
+            self.toDoListPresenter.delateTask(indexPath: indexPath)
+        }))
+        deleteTaskAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(deleteTaskAlert, animated: true, completion: nil)
+    }
+    
+    func deleteRow(indexPath: IndexPath){
+        tableView.deleteRows(at: [indexPath], with: .left)
     }
     
 }

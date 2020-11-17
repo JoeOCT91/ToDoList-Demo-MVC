@@ -15,9 +15,12 @@ protocol SignInViewPresenter: NSObject {
 }
 
 import Foundation
+
 class SignInPresenter {
     
     weak private var signInViewDelgate: SignInViewPresenter?
+    
+    var validator =  ValidatorManager.shared()
     
     init(signInViewDelgate: SignInViewPresenter?) {
         self.signInViewDelgate = signInViewDelgate
@@ -29,19 +32,19 @@ class SignInPresenter {
     
     func validateInputs(with email: String, password: String){
         
-        if Validation.isValidEmail(email) || email.isEmpty {
+        if validator.isValidEmail(email) || email.isEmpty {
             signInViewDelgate?.setEmailErrorLabel(message: "")
         } else {
             signInViewDelgate?.setEmailErrorLabel(message: "Invalid Email")
         }
         
-        if Validation.isPasswordValid(password) || password.isEmpty {
+        if validator.isPasswordValid(password) || password.isEmpty {
             signInViewDelgate?.setPasswordErrorLabel(message: "")
         } else {
             signInViewDelgate?.setPasswordErrorLabel(message: "Password must be 8 charcters")
         }
         
-        if Validation.isValidEmail(email) && Validation.isPasswordValid(password){
+        if validator.isValidEmail(email) && validator.isPasswordValid(password){
             signInViewDelgate?.enableSignInButton(isEnable: true, color: "blue")
         } else {
             signInViewDelgate?.enableSignInButton(isEnable: false, color: "gray")
