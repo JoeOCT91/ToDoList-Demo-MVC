@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,7 +13,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="SignInVC" id="BYZ-38-t0r" customClass="SignInVC" customModule="TODOApp_MVC_Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="SigninView" customModule="TODOApp_MVC_Demo" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -23,13 +25,13 @@
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbX-tl-wOe">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbX-tl-wOe">
                                 <rect key="frame" x="45" y="779" width="58" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Sign up"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkf-xI-QTU">
-                                <rect key="frame" x="233" y="778.66666666666663" width="136" height="34"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkf-xI-QTU">
+                                <rect key="frame" x="234" y="778.66666666666663" width="135" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Forget password"/>
                             </button>
@@ -41,28 +43,29 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZN-K6-0Z2">
                                 <rect key="frame" x="45" y="391.66666666666669" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WZ-x3-pU2">
                                 <rect key="frame" x="45" y="315.66666666666669" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fip-D0-Q2U">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fip-D0-Q2U">
                                 <rect key="frame" x="142" y="470.66666666666669" width="130" height="45.000000000000057"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="qdA-Cl-VOQ"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="v9P-KL-vvw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <state key="normal" title="Sign In">
-                                    <color key="titleColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
                                 </state>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="EIn-el-xAk" firstAttribute="top" secondItem="3WZ-x3-pU2" secondAttribute="bottom" constant="5" id="3gB-oh-5kZ"/>
@@ -84,16 +87,18 @@
                             <constraint firstItem="EIn-el-xAk" firstAttribute="leading" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="45" id="uKL-Qr-7di"/>
                             <constraint firstItem="3DH-Z0-Hd6" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-35" id="xic-7b-rj1"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <connections>
+                            <outlet property="emailLabel" destination="3WZ-x3-pU2" id="kOb-rs-cSd"/>
+                            <outlet property="emailTextField" destination="EIn-el-xAk" id="Uo0-xT-Cz1"/>
+                            <outlet property="forgetPasswordButton" destination="kkf-xI-QTU" id="DsJ-am-j36"/>
+                            <outlet property="passwordLabel" destination="OZN-K6-0Z2" id="1bm-r3-lQd"/>
+                            <outlet property="passwordTextField" destination="3DH-Z0-Hd6" id="xDk-b5-b3j"/>
+                            <outlet property="signInButton" destination="Fip-D0-Q2U" id="Z7c-RQ-BdJ"/>
+                            <outlet property="signUpButton" destination="DbX-tl-wOe" id="iVA-Ar-cE9"/>
+                        </connections>
                     </view>
                     <connections>
-                        <outlet property="emailLabel" destination="3WZ-x3-pU2" id="2we-gD-aEo"/>
-                        <outlet property="emailTextField" destination="EIn-el-xAk" id="eaP-fA-SWI"/>
-                        <outlet property="forgetPasswordButton" destination="kkf-xI-QTU" id="DBS-GS-Sl4"/>
-                        <outlet property="passwordLabel" destination="OZN-K6-0Z2" id="cTQ-Mv-Bc3"/>
-                        <outlet property="passwordTextField" destination="3DH-Z0-Hd6" id="sfJ-MF-jvD"/>
-                        <outlet property="signInButton" destination="Fip-D0-Q2U" id="kjQ-01-f7V"/>
-                        <outlet property="signUpButton" destination="DbX-tl-wOe" id="r6o-p6-aCD"/>
+                        <outlet property="SingninView" destination="8bC-Xf-vdC" id="FTN-OC-mpf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -126,16 +131,16 @@
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" textContentType="email"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4z0-lS-8Pj">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4z0-lS-8Pj">
                                 <rect key="frame" x="132" y="660.66666666666663" width="150" height="55"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="hFD-3a-kPW"/>
                                     <constraint firstAttribute="height" constant="55" id="nmf-6b-MDh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <state key="normal" title="Sign Up">
-                                    <color key="titleColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <color key="titleColor" systemColor="systemBackgroundColor"/>
                                 </state>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Repeat password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I9l-eb-Xgf">
@@ -152,7 +157,8 @@
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="ZD4-pD-Dq7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="VtA-MA-xYM" firstAttribute="top" secondItem="tdX-n4-CcR" secondAttribute="bottom" constant="25" id="0dE-h6-mzg"/>
                             <constraint firstItem="tdX-n4-CcR" firstAttribute="top" secondItem="I65-uA-rJX" secondAttribute="bottom" constant="25" id="4vd-Eh-YuN"/>
@@ -175,7 +181,6 @@
                             <constraint firstItem="4z0-lS-8Pj" firstAttribute="centerX" secondItem="ZD4-pD-Dq7" secondAttribute="centerX" id="xyH-y8-f3Y"/>
                             <constraint firstItem="Prg-K0-YZL" firstAttribute="height" secondItem="I65-uA-rJX" secondAttribute="height" id="yjN-Mf-l0I"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="ZD4-pD-Dq7"/>
                     </view>
                     <connections>
                         <outlet property="ageTextField" destination="Prg-K0-YZL" id="bHn-iW-i4R"/>
@@ -190,4 +195,15 @@
             <point key="canvasLocation" x="765" y="56"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

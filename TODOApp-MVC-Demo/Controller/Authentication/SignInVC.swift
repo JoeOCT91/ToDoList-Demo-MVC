@@ -9,20 +9,13 @@
 
 import UIKit
 
-class SignInVC: UIViewController, SignInViewPresenter {
+class SignInVC: UIViewController, SignInViewPresenter, signinDelgate {
     
     //MARK:- Presenter Proprity
     private lazy var signInPresenter = SignInPresenter(signInViewDelgate: self)
     
     //MARK:- Outlets
-    
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var forgetPasswordButton: UIButton!
-    @IBOutlet weak var passwordLabel: UILabel!
-    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet var SingninView: SigninView!
     
    //MARK:- Proprities
     
@@ -32,8 +25,8 @@ class SignInVC: UIViewController, SignInViewPresenter {
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurTextFields()
-        configureButtons()
+        SingninView.delgate = self
+        SingninView.setup()
         navigationController?.navigationBar.isHidden = true
         dimissKeyboardWhenTap()
     }
@@ -47,25 +40,25 @@ class SignInVC: UIViewController, SignInViewPresenter {
     }
     
     func enableSignInButton(isEnable: Bool, color: String){
-        signInButton.isEnabled = isEnable
+        SingninView.signInButton.isEnabled = isEnable
         let colors: [String : UIColor] = [Colors.blue.rawValue : UIColor.systemBlue, Colors.gray.rawValue : UIColor.systemGray2]
-        signInButton.backgroundColor = colors[color]
+        SingninView.signInButton.backgroundColor = colors[color]
     }
     
-    @objc private func textFieldDidChange(_ textField: UITextField) {
+    func textFieldDidChange(_ textField: UITextField) {
         if let text = textField.text{
-            if textField == passwordTextField { password = text }
-            if textField == emailTextField { email = text }
+            if textField == SingninView.passwordTextField { password = text }
+            if textField == SingninView.emailTextField { email = text }
         }
         signInPresenter.validateInputs(with: email, password: password)
     }
     
     func setPasswordErrorLabel(message: String){
-        passwordLabel.text = message
+        SingninView.passwordLabel.text = message
     }
     
     func setEmailErrorLabel(message: String){
-        emailLabel.text = message
+        SingninView.emailLabel.text = message
     }
 
     func presentError(with massage: String){
@@ -87,63 +80,16 @@ class SignInVC: UIViewController, SignInViewPresenter {
         let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
         return signInVC
     }
-
 }
+
 extension SignInVC {
     
-    @objc private func signInPressed(){
+    @objc internal func signInPressed(){
         signInPresenter.loginCall(email: email, password: password)
     }
     
-    @objc private func signUpPressed(){
+    @objc internal func signUpPressed(){
         let signUpVC = SignUpVC.create()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
-    
-    private func configurTextFields(){
-        passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        setShadows(textField: emailTextField)
-        setShadows(textField: passwordTextField)
-    }
-    
-    private func configureButtons(){
-        signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
-        signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
-        signInButton.clipsToBounds      = true
-        signInButton.layer.cornerRadius = 8
-        signInButton.isEnabled          = false
-        signInButton.backgroundColor    = UIColor.systemGray2
-    }
-    
-    private func setShadows(textField: UITextField){
-        // corner radius
-        textField.layer.cornerRadius = 8
-        textField.backgroundColor = .white
-
-        // border
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.systemGray3.withAlphaComponent(0.5).cgColor
-
-        // shadow
-        textField.layer.shadowColor = UIColor.gray.cgColor
-        textField.layer.shadowOffset = CGSize(width: 0, height: 0)
-        textField.layer.shadowOpacity = 0.7
-        textField.layer.shadowRadius = 3.0
-        
-        textField.layer.shadowPath = UIBezierPath(roundedRect: textField.bounds, cornerRadius: 4).cgPath
-        
-        let paddingView : UIImageView = UIImageView(frame: .zero)
-        let profileIconConfig   = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
-        
-        paddingView.preferredSymbolConfiguration = profileIconConfig
-        paddingView.image = (textField == emailTextField) ? UIImage(systemName: "envelope.circle") : UIImage(systemName: "lock.circle")
-        
-        paddingView.tintColor = .systemGray3
-        paddingView.contentMode = .center
-        
-        textField.leftView = paddingView
-        textField.leftViewMode = UITextField.ViewMode.always
-    }
-    
 }
