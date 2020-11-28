@@ -9,10 +9,10 @@
 
 import UIKit
 
-class SignInVC: UIViewController, SignInViewPresenter, signinDelgate {
+class SignInVC: UIViewController, SignInView, signinDelgate {
     
-    //MARK:- Presenter Proprity
-    private lazy var signInPresenter = SignInPresenter(signInViewDelgate: self)
+    //MARK:- ViewModel Proprity
+    private var viewModel: SignInViewModel!
     
     //MARK:- Outlets
     @IBOutlet var SingninView: SigninView!
@@ -46,11 +46,9 @@ class SignInVC: UIViewController, SignInViewPresenter, signinDelgate {
     }
     
     func textFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text{
-            if textField == SingninView.passwordTextField { password = text }
-            if textField == SingninView.emailTextField { email = text }
-        }
-        signInPresenter.validateInputs(with: email, password: password)
+        password = SingninView.passwordTextField.text!
+        email = SingninView.emailTextField.text!
+        viewModel.validateInputs(with: email, password: password)
     }
     
     func setPasswordErrorLabel(message: String){
@@ -78,6 +76,8 @@ class SignInVC: UIViewController, SignInViewPresenter, signinDelgate {
     // MARK:- Public Methods
     class func create() -> SignInVC {
         let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
+        let viewModel = SignInViewModel(signInViewDelgate: signInVC)
+        signInVC.viewModel = viewModel
         return signInVC
     }
 }
@@ -85,7 +85,7 @@ class SignInVC: UIViewController, SignInViewPresenter, signinDelgate {
 extension SignInVC {
     
     @objc internal func signInPressed(){
-        signInPresenter.loginCall(email: email, password: password)
+        viewModel.loginCall(email: email, password: password)
     }
     
     @objc internal func signUpPressed(){
