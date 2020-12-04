@@ -48,7 +48,7 @@ class AppStateManager {
             }
         }
     }
-    
+    //MARK:- App state change functions
     func switchToMainState() {
         let todoListVC = TodoListVC.create()
         let navigationController = UINavigationController(rootViewController: todoListVC)
@@ -62,6 +62,7 @@ class AppStateManager {
         self.mainWindow?.rootViewController = navigationController
     }
 }
+
 extension AppStateManager: AppStateManagerProtocol {
     func start(appDelgate: AppDelegateProtocol){
         self.appDelgate = appDelgate
@@ -74,6 +75,7 @@ extension AppStateManager: AppStateManagerProtocol {
     }
 }
 extension AppStateManager: AuthNavigationDelgate {
+    
     func showAuthState() {
         state = .auth
     }
