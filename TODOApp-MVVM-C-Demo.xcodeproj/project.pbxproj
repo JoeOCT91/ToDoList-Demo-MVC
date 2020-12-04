@@ -51,7 +51,6 @@
 
 /* Begin PBXFileReference section */
 		20AD3AB462A147F8E7A13F49 /* Pods-TODOApp-MVVM-C-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVVM-C-Demo.debug.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVVM-C-Demo/Pods-TODOApp-MVVM-C-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		658DB19265AC46253A8B6597 /* Pods-TODOApp-MVC-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVC-Demo.debug.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVC-Demo/Pods-TODOApp-MVC-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		8599B7D21CB0D24F8C5DEA25 /* Pods-TODOApp-MVVM-C-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVVM-C-Demo.release.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVVM-C-Demo/Pods-TODOApp-MVVM-C-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		8608525D255B48AA00FDA837 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		862BEBDE25742EA100D6C488 /* SingUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpView.swift; sourceTree = "<group>"; };
@@ -95,7 +94,6 @@
 		B76E56C22548B2B100C13D43 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B76E56C42548BACC00C13D43 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		B76E56C62548BEE100C13D43 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		D0AC84BFD376CBB368B7D53F /* Pods-TODOApp-MVC-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVC-Demo.release.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVC-Demo/Pods-TODOApp-MVC-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +119,6 @@
 		61A3BCCE7556368E1692BD67 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				658DB19265AC46253A8B6597 /* Pods-TODOApp-MVC-Demo.debug.xcconfig */,
-				D0AC84BFD376CBB368B7D53F /* Pods-TODOApp-MVC-Demo.release.xcconfig */,
 				20AD3AB462A147F8E7A13F49 /* Pods-TODOApp-MVVM-C-Demo.debug.xcconfig */,
 				8599B7D21CB0D24F8C5DEA25 /* Pods-TODOApp-MVVM-C-Demo.release.xcconfig */,
 			);
