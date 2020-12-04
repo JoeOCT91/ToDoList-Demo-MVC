@@ -1,2 +1,1 @@
-# ToDoList-Demo-MVC
-this project is a to do list, using public api 
+# ToDoList-Demo-MVVM-C (Using Protocols)
