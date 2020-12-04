@@ -8,17 +8,23 @@
 //
 
 import UIKit
+protocol AuthNavigationDelgate: class {
+    func showMainState()
+    func showAuthState()
+}
 
-class SignInVC: UIViewController, SignInView, signinDelgate {
-    
+class SignInVC: UIViewController, signinDelgate {
+
     //MARK:- ViewModel Proprity
-    private var viewModel: SignInViewModel!
+    private var viewModel: AuthViewModel!
     
     //MARK:- Outlets
     @IBOutlet var SingninView: SigninView!
     
-   //MARK:- Proprities
+    //MARK:- Cordinator
+    weak var delgate: AuthNavigationDelgate?
     
+   //MARK:- Proprities
     private var email    = ""
     private var password = ""
     
@@ -39,44 +45,21 @@ class SignInVC: UIViewController, SignInView, signinDelgate {
         navigationController?.navigationBar.isHidden = false
     }
     
-    func enableSignInButton(isEnable: Bool, color: String){
-        SingninView.signInButton.isEnabled = isEnable
-        let colors: [String : UIColor] = [Colors.blue.rawValue : UIColor.systemBlue, Colors.gray.rawValue : UIColor.systemGray2]
-        SingninView.signInButton.backgroundColor = colors[color]
-    }
-    
     func textFieldDidChange(_ textField: UITextField) {
         password = SingninView.passwordTextField.text!
         email = SingninView.emailTextField.text!
-        viewModel.validateInputs(with: email, password: password)
+        viewModel.validSignInInputs(email: email, password: password)
     }
     
-    func setPasswordErrorLabel(message: String){
-        SingninView.passwordLabel.text = message
-    }
-    
-    func setEmailErrorLabel(message: String){
-        SingninView.emailLabel.text = message
-    }
-
     func presentError(with massage: String){
         self.showAlert(title: "Sorry", message: massage)
     }
-    
-    func presentLoader(isVisable: Bool){
-        isVisable ? view.showLoader() : view.hideLoader()
-    }
-    
-    func switchToMainState(){
-        let toDoVC = TodoListVC.create()
-        let navigationController = UINavigationController(rootViewController: toDoVC)
-        AppDelegate.shared().window?.rootViewController = navigationController
-    }
+ 
     
     // MARK:- Public Methods
     class func create() -> SignInVC {
         let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
-        let viewModel = SignInViewModel(signInViewDelgate: signInVC)
+        let viewModel = AuthViewModel(delagte: signInVC)
         signInVC.viewModel = viewModel
         return signInVC
     }
@@ -90,6 +73,39 @@ extension SignInVC {
     
     @objc internal func signUpPressed(){
         let signUpVC = SignUpVC.create()
+        signUpVC.delgate = self.delgate
         navigationController?.pushViewController(signUpVC, animated: true)
+    }
+}
+
+extension SignInVC: AuthPortocol {
+    
+    func enableButton() {
+        self.SingninView.signInButton.backgroundColor = .systemBlue
+        self.SingninView.signInButton.isEnabled = true
+    }
+    func disableButton() {
+        self.SingninView.signInButton.backgroundColor = .systemGray
+        self.SingninView.signInButton.isEnabled = false
+    }
+    
+    func switchToMainState(){
+        self.delgate?.showMainState()
+    }
+    
+    func setPasswordErrorLabel(message: String){
+        SingninView.passwordLabel.text = message
+    }
+    
+    func setEmailErrorLabel(message: String){
+        SingninView.emailLabel.text = message
+    }
+    
+    func showLoader() {
+        self.view.showLoader()
+    }
+
+    func hideLoader() {
+        self.view.hideLoader()
     }
 }

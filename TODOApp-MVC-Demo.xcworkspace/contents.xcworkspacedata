@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:TODOApp-MVC-Demo.xcodeproj">
+      location = "group:/Users/joeoct91/Develop/ToDoList-Demo-MVC/TODOApp-MVVM-C-Demo.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

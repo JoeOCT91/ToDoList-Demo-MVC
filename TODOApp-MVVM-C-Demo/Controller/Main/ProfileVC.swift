@@ -202,9 +202,7 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource, EditProfileDelg
         signoutAlert.addAction(UIAlertAction(title: "Sign out", style: .default, handler: { (action: UIAlertAction!) in
             DispatchQueue.main.async {
                 UserDefaultsManager.shared().token = nil
-                let signinVC = SignInVC.create()
-                let navigationController = UINavigationController(rootViewController: signinVC)
-                AppDelegate.shared().window?.rootViewController = navigationController
+                AppStateManager.shared().showAuthState()
             }
         }))
         signoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))

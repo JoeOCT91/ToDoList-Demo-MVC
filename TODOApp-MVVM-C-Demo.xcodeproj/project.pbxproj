@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		767FA02330D1EAF4DF5F4A2D /* Pods_TODOApp_MVC_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91F675E6B4DF70681B4B8BD5 /* Pods_TODOApp_MVC_Demo.framework */; };
-		8608525E255B48AA00FDA837 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8608525D255B48AA00FDA837 /* SignInViewModel.swift */; };
+		8608525E255B48AA00FDA837 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8608525D255B48AA00FDA837 /* AuthViewModel.swift */; };
+		862BEBDF25742EA100D6C488 /* SingUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862BEBDE25742EA100D6C488 /* SingUpView.swift */; };
+		862D9F422576EA870082C101 /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862D9F412576EA870082C101 /* AppStateManager.swift */; };
 		8632BEF0254DC87A0067D945 /* Notification.Name+MoreNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEEF254DC87A0067D945 /* Notification.Name+MoreNames.swift */; };
 		8632BEF2254DE2B00067D945 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF1254DE2B00067D945 /* ProfileVC.swift */; };
 		8632BEF4254DE4590067D945 /* ProfilePictureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */; };
@@ -49,7 +51,9 @@
 
 /* Begin PBXFileReference section */
 		658DB19265AC46253A8B6597 /* Pods-TODOApp-MVC-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVC-Demo.debug.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVC-Demo/Pods-TODOApp-MVC-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		8608525D255B48AA00FDA837 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		8608525D255B48AA00FDA837 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		862BEBDE25742EA100D6C488 /* SingUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpView.swift; sourceTree = "<group>"; };
+		862D9F412576EA870082C101 /* AppStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateManager.swift; sourceTree = "<group>"; };
 		8632BEEF254DC87A0067D945 /* Notification.Name+MoreNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+MoreNames.swift"; sourceTree = "<group>"; };
 		8632BEF1254DE2B00067D945 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		8632BEF3254DE4590067D945 /* ProfilePictureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureTableViewCell.swift; sourceTree = "<group>"; };
@@ -73,7 +77,7 @@
 		86CF460B254EDBAE00540CB5 /* ValidatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorManager.swift; sourceTree = "<group>"; };
 		86CF460D25505D6F00540CB5 /* EditTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskVC.swift; sourceTree = "<group>"; };
 		91F675E6B4DF70681B4B8BD5 /* Pods_TODOApp_MVC_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TODOApp_MVC_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B76E568D2548A24A00C13D43 /* TODOApp-MVC-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TODOApp-MVC-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B76E568D2548A24A00C13D43 /* TODOApp-MVVM-C-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TODOApp-MVVM-C-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76E56902548A24A00C13D43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B76E56942548A24A00C13D43 /* TodoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListVC.swift; sourceTree = "<group>"; };
 		B76E56972548A24A00C13D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Authentication.storyboard; sourceTree = "<group>"; };
@@ -121,19 +125,37 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		8608525C255B487000FDA837 /* Presenter */ = {
+		8608525C255B487000FDA837 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				863C15EC2564603C00294F8C /* Authentication */,
 				863E218D255C8AC80033D920 /* ToDoListPresenter.swift */,
 			);
-			path = Presenter;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		862BEBE125742EAB00D6C488 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				B76E56BB2548A84600C13D43 /* SignUpVC.swift */,
+				862BEBDE25742EA100D6C488 /* SingUpView.swift */,
+			);
+			name = SignUp;
+			sourceTree = "<group>";
+		};
+		862D9F402576EA670082C101 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B76E56902548A24A00C13D43 /* AppDelegate.swift */,
+				862D9F412576EA870082C101 /* AppStateManager.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		863C15EC2564603C00294F8C /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				8608525D255B48AA00FDA837 /* SignInViewModel.swift */,
+				8608525D255B48AA00FDA837 /* AuthViewModel.swift */,
 			);
 			name = Authentication;
 			sourceTree = "<group>";
@@ -150,7 +172,7 @@
 		B76E56842548A24A00C13D43 = {
 			isa = PBXGroup;
 			children = (
-				B76E568F2548A24A00C13D43 /* TODOApp-MVC-Demo */,
+				B76E568F2548A24A00C13D43 /* TODOApp-MVVM-C-Demo */,
 				B76E568E2548A24A00C13D43 /* Products */,
 				61A3BCCE7556368E1692BD67 /* Pods */,
 				336C7228F7A110C5F16A2F09 /* Frameworks */,
@@ -160,27 +182,27 @@
 		B76E568E2548A24A00C13D43 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B76E568D2548A24A00C13D43 /* TODOApp-MVC-Demo.app */,
+				B76E568D2548A24A00C13D43 /* TODOApp-MVVM-C-Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B76E568F2548A24A00C13D43 /* TODOApp-MVC-Demo */ = {
+		B76E568F2548A24A00C13D43 /* TODOApp-MVVM-C-Demo */ = {
 			isa = PBXGroup;
 			children = (
-				B76E56902548A24A00C13D43 /* AppDelegate.swift */,
+				862D9F402576EA670082C101 /* Shared */,
 				B76E56A42548A2B400C13D43 /* Networking */,
 				B76E56A52548A2BE00C13D43 /* Managers */,
 				B76E56AB2548A32D00C13D43 /* Utilities */,
 				B76E56A62548A2C900C13D43 /* Extensions */,
 				B76E56A82548A2E400C13D43 /* Model */,
 				B76E56A92548A2EA00C13D43 /* View */,
-				8608525C255B487000FDA837 /* Presenter */,
+				8608525C255B487000FDA837 /* ViewModel */,
 				B76E56AA2548A2F200C13D43 /* Controller */,
 				B76E56A72548A2D300C13D43 /* Resources */,
 				B76E569E2548A24C00C13D43 /* Info.plist */,
 			);
-			path = "TODOApp-MVC-Demo";
+			path = "TODOApp-MVVM-C-Demo";
 			sourceTree = "<group>";
 		};
 		B76E56A42548A2B400C13D43 /* Networking */ = {
@@ -286,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				863F3DAB256A8C2D00FD9868 /* Signin */,
-				B76E56BB2548A84600C13D43 /* SignUpVC.swift */,
+				862BEBE125742EAB00D6C488 /* SignUp */,
 				863E218B255C2B940033D920 /* AuthAlertVC.swift */,
 			);
 			path = Authentication;
@@ -307,9 +329,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B76E568C2548A24A00C13D43 /* TODOApp-MVC-Demo */ = {
+		B76E568C2548A24A00C13D43 /* TODOApp-MVVM-C-Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B76E56A12548A24C00C13D43 /* Build configuration list for PBXNativeTarget "TODOApp-MVC-Demo" */;
+			buildConfigurationList = B76E56A12548A24C00C13D43 /* Build configuration list for PBXNativeTarget "TODOApp-MVVM-C-Demo" */;
 			buildPhases = (
 				1B3F5FEDAF17FC907A96F2BC /* [CP] Check Pods Manifest.lock */,
 				B76E56892548A24A00C13D43 /* Sources */,
@@ -321,9 +343,9 @@
 			);
 			dependencies = (
 			);
-			name = "TODOApp-MVC-Demo";
+			name = "TODOApp-MVVM-C-Demo";
 			productName = "TODOApp-MVC-Demo";
-			productReference = B76E568D2548A24A00C13D43 /* TODOApp-MVC-Demo.app */;
+			productReference = B76E568D2548A24A00C13D43 /* TODOApp-MVVM-C-Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -341,7 +363,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B76E56882548A24A00C13D43 /* Build configuration list for PBXProject "TODOApp-MVC-Demo" */;
+			buildConfigurationList = B76E56882548A24A00C13D43 /* Build configuration list for PBXProject "TODOApp-MVVM-C-Demo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -354,7 +376,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B76E568C2548A24A00C13D43 /* TODOApp-MVC-Demo */,
+				B76E568C2548A24A00C13D43 /* TODOApp-MVVM-C-Demo */,
 			);
 		};
 /* End PBXProject section */
@@ -422,6 +444,7 @@
 			files = (
 				B76E56BF2548AFA000C13D43 /* APIManager.swift in Sources */,
 				86CF460E25505D6F00540CB5 /* EditTaskVC.swift in Sources */,
+				862BEBDF25742EA100D6C488 /* SingUpView.swift in Sources */,
 				863F3DA9256A8C2300FD9868 /* SigninView.swift in Sources */,
 				B76E56952548A24A00C13D43 /* TodoListVC.swift in Sources */,
 				8643E04F25580EA400E79D91 /* APIRouter.swift in Sources */,
@@ -429,7 +452,7 @@
 				8639DE6F2559626500306C07 /* HttpBody.swift in Sources */,
 				86A2FA66254C3A9A004DB3D9 /* TaskTableViewCell.swift in Sources */,
 				B76E56912548A24A00C13D43 /* AppDelegate.swift in Sources */,
-				8608525E255B48AA00FDA837 /* SignInViewModel.swift in Sources */,
+				8608525E255B48AA00FDA837 /* AuthViewModel.swift in Sources */,
 				86A2FA5E254B52A5004DB3D9 /* TaskData.swift in Sources */,
 				863E218C255C2B940033D920 /* AuthAlertVC.swift in Sources */,
 				866BC17E2552A8C800972F0F /* UIViewController+Alert.swift in Sources */,
@@ -438,6 +461,7 @@
 				8632BEF0254DC87A0067D945 /* Notification.Name+MoreNames.swift in Sources */,
 				8632BEF2254DE2B00067D945 /* ProfileVC.swift in Sources */,
 				866BC17C2552A49000972F0F /* String+trimming.swift in Sources */,
+				862D9F422576EA870082C101 /* AppStateManager.swift in Sources */,
 				B76E56B92548A76600C13D43 /* SignInVC.swift in Sources */,
 				86A390B825549A8A0027F530 /* EditProfileVC.swift in Sources */,
 				B76E56BC2548A84600C13D43 /* SignUpVC.swift in Sources */,
@@ -598,7 +622,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "TODOApp-MVC-Demo/Info.plist";
+				INFOPLIST_FILE = "/Users/joeoct91/Develop/ToDoList-Demo-MVC/TODOApp-MVVM-C-Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -616,7 +640,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "TODOApp-MVC-Demo/Info.plist";
+				INFOPLIST_FILE = "/Users/joeoct91/Develop/ToDoList-Demo-MVC/TODOApp-MVVM-C-Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -631,7 +655,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B76E56882548A24A00C13D43 /* Build configuration list for PBXProject "TODOApp-MVC-Demo" */ = {
+		B76E56882548A24A00C13D43 /* Build configuration list for PBXProject "TODOApp-MVVM-C-Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B76E569F2548A24C00C13D43 /* Debug */,
@@ -640,7 +664,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B76E56A12548A24C00C13D43 /* Build configuration list for PBXNativeTarget "TODOApp-MVC-Demo" */ = {
+		B76E56A12548A24C00C13D43 /* Build configuration list for PBXNativeTarget "TODOApp-MVVM-C-Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B76E56A22548A24C00C13D43 /* Debug */,
